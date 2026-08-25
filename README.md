@@ -1,1 +1,0 @@
-# TAMP-for-Labeled-Pallet-Rearrangement
