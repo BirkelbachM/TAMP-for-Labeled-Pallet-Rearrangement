@@ -103,12 +103,6 @@ figure { margin: 0; }
   border: 1px solid var(--rule);
   overflow: hidden;
 }
-video {
-  width: 100%; height: 100%; display: block; object-fit: cover;
-  background: var(--panel);
-  /* Nothing to click, pause or scrub -- the grid just runs. */
-  pointer-events: none;
-}
 .missing {
   position: absolute; inset: 0; display: flex; align-items: center;
   justify-content: center; color: var(--muted); font-size: 12px;
@@ -195,13 +189,13 @@ code {
 <figure class="init">
 <div class="collabel">Initial state</div>
 <div class="frame">
-<img src="/blender_files_fade20_engagement/init/S01.png" alt="Scenario 01 initial state" loading="lazy" data-variants="{&quot;plain&quot;:&quot;/blender_files_fade20/init/S01.png&quot;,&quot;areas&quot;:&quot;/blender_files_fade20_engagement/init/S01.png&quot;}">
+<img src="assets/engagement/init/S01.png" alt="Scenario 01 initial state" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/init/S01.png&quot;,&quot;areas&quot;:&quot;assets/engagement/init/S01.png&quot;}">
 </div>
 </figure>
 <figure>
 <div class="collabel">Turning radius &rho; = 2.5 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S01_rho2p5_seed20.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S01_rho2p5_seed20.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S01_rho2p5_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S01_rho2p5_seed20.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S01_rho2p5_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S01_rho2p5_seed20.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S01_rho2p5_seed20.gif" alt="Animation S01_rho2p5_seed20" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S01_rho2p5_seed20.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S01_rho2p5_seed20.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="24.1000 75.9000" stroke-dashoffset="-0.0000"><title>5 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="44.1000 55.9000" stroke-dashoffset="-25.0000"><title>9 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="29.1000 70.9000" stroke-dashoffset="-70.0000"><title>6 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -211,7 +205,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 3.0 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S01_rho3_seed20.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S01_rho3_seed20.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S01_rho3_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S01_rho3_seed20.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S01_rho3_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S01_rho3_seed20.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S01_rho3_seed20.gif" alt="Animation S01_rho3_seed20" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S01_rho3_seed20.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S01_rho3_seed20.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="14.1000 85.9000" stroke-dashoffset="-0.0000"><title>3 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="24.1000 75.9000" stroke-dashoffset="-15.0000"><title>5 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="59.1000 40.9000" stroke-dashoffset="-40.0000"><title>12 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -221,7 +215,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 3.5 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S01_rho3p5_seed20.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S01_rho3p5_seed20.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S01_rho3p5_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S01_rho3p5_seed20.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S01_rho3p5_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S01_rho3p5_seed20.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S01_rho3p5_seed20.gif" alt="Animation S01_rho3p5_seed20" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S01_rho3p5_seed20.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S01_rho3p5_seed20.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-0.0000"><title>1 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="39.1000 60.9000" stroke-dashoffset="-5.0000"><title>8 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="54.1000 45.9000" stroke-dashoffset="-45.0000"><title>11 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -231,7 +225,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 4.0 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S01_rho4_seed20.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S01_rho4_seed20.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S01_rho4_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S01_rho4_seed20.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S01_rho4_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S01_rho4_seed20.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S01_rho4_seed20.gif" alt="Animation S01_rho4_seed20" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S01_rho4_seed20.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S01_rho4_seed20.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="18/20 solved"><title>Wilson 95% CI 70&ndash;97%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-0.0000"><title>1 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="44.1000 55.9000" stroke-dashoffset="-5.0000"><title>9 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="39.1000 60.9000" stroke-dashoffset="-50.0000"><title>8 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-90.0000"><title>2 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">18/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -241,7 +235,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 4.5 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S01_rho4p5_seed20.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S01_rho4p5_seed20.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S01_rho4p5_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S01_rho4p5_seed20.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S01_rho4p5_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S01_rho4p5_seed20.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S01_rho4p5_seed20.gif" alt="Animation S01_rho4p5_seed20" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S01_rho4p5_seed20.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S01_rho4p5_seed20.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="17/20 solved"><title>Wilson 95% CI 64&ndash;95%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-0.0000"><title>1 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="14.1000 85.9000" stroke-dashoffset="-5.0000"><title>3 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="64.1000 35.9000" stroke-dashoffset="-20.0000"><title>13 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="14.1000 85.9000" stroke-dashoffset="-85.0000"><title>3 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">17/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -256,13 +250,13 @@ code {
 <figure class="init">
 <div class="collabel">Initial state</div>
 <div class="frame">
-<img src="/blender_files_fade20_engagement/init/S02.png" alt="Scenario 02 initial state" loading="lazy" data-variants="{&quot;plain&quot;:&quot;/blender_files_fade20/init/S02.png&quot;,&quot;areas&quot;:&quot;/blender_files_fade20_engagement/init/S02.png&quot;}">
+<img src="assets/engagement/init/S02.png" alt="Scenario 02 initial state" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/init/S02.png&quot;,&quot;areas&quot;:&quot;assets/engagement/init/S02.png&quot;}">
 </div>
 </figure>
 <figure>
 <div class="collabel">Turning radius &rho; = 2.5 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S02_rho2p5_seed20.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S02_rho2p5_seed20.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S02_rho2p5_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S02_rho2p5_seed20.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S02_rho2p5_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S02_rho2p5_seed20.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S02_rho2p5_seed20.gif" alt="Animation S02_rho2p5_seed20" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S02_rho2p5_seed20.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S02_rho2p5_seed20.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="64.1000 35.9000" stroke-dashoffset="-0.0000"><title>13 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-65.0000"><title>1 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="29.1000 70.9000" stroke-dashoffset="-70.0000"><title>6 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -272,7 +266,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 3.0 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S02_rho3_seed20.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S02_rho3_seed20.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S02_rho3_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S02_rho3_seed20.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S02_rho3_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S02_rho3_seed20.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S02_rho3_seed20.gif" alt="Animation S02_rho3_seed20" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S02_rho3_seed20.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S02_rho3_seed20.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="29.1000 70.9000" stroke-dashoffset="-0.0000"><title>6 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="69.1000 30.9000" stroke-dashoffset="-30.0000"><title>14 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -282,7 +276,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 3.5 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S02_rho3p5_seed20.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S02_rho3p5_seed20.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S02_rho3p5_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S02_rho3p5_seed20.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S02_rho3p5_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S02_rho3p5_seed20.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S02_rho3p5_seed20.gif" alt="Animation S02_rho3p5_seed20" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S02_rho3p5_seed20.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S02_rho3p5_seed20.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="39.1000 60.9000" stroke-dashoffset="-0.0000"><title>8 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="59.1000 40.9000" stroke-dashoffset="-40.0000"><title>12 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -292,7 +286,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 4.0 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S02_rho4_seed20.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S02_rho4_seed20.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S02_rho4_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S02_rho4_seed20.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S02_rho4_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S02_rho4_seed20.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S02_rho4_seed20.gif" alt="Animation S02_rho4_seed20" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S02_rho4_seed20.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S02_rho4_seed20.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="24.1000 75.9000" stroke-dashoffset="-0.0000"><title>5 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-25.0000"><title>2 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="64.1000 35.9000" stroke-dashoffset="-35.0000"><title>13 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -302,7 +296,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 4.5 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S02_rho4p5_seed20.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S02_rho4p5_seed20.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S02_rho4p5_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S02_rho4p5_seed20.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S02_rho4p5_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S02_rho4p5_seed20.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S02_rho4p5_seed20.gif" alt="Animation S02_rho4p5_seed20" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S02_rho4p5_seed20.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S02_rho4p5_seed20.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="17/20 solved"><title>Wilson 95% CI 64&ndash;95%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="24.1000 75.9000" stroke-dashoffset="-0.0000"><title>5 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-25.0000"><title>1 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="54.1000 45.9000" stroke-dashoffset="-30.0000"><title>11 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="14.1000 85.9000" stroke-dashoffset="-85.0000"><title>3 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">17/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -317,13 +311,13 @@ code {
 <figure class="init">
 <div class="collabel">Initial state</div>
 <div class="frame">
-<img src="/blender_files_fade20_engagement/init/S03.png" alt="Scenario 03 initial state" loading="lazy" data-variants="{&quot;plain&quot;:&quot;/blender_files_fade20/init/S03.png&quot;,&quot;areas&quot;:&quot;/blender_files_fade20_engagement/init/S03.png&quot;}">
+<img src="assets/engagement/init/S03.png" alt="Scenario 03 initial state" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/init/S03.png&quot;,&quot;areas&quot;:&quot;assets/engagement/init/S03.png&quot;}">
 </div>
 </figure>
 <figure>
 <div class="collabel">Turning radius &rho; = 2.5 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S03_rho2p5_seed20.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S03_rho2p5_seed20.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S03_rho2p5_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S03_rho2p5_seed20.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S03_rho2p5_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S03_rho2p5_seed20.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S03_rho2p5_seed20.gif" alt="Animation S03_rho2p5_seed20" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S03_rho2p5_seed20.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S03_rho2p5_seed20.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="19/20 solved"><title>Wilson 95% CI 76&ndash;99%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="29.1000 70.9000" stroke-dashoffset="-0.0000"><title>6 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="64.1000 35.9000" stroke-dashoffset="-30.0000"><title>13 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-95.0000"><title>1 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">19/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -333,7 +327,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 3.0 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S03_rho3_seed20.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S03_rho3_seed20.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S03_rho3_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S03_rho3_seed20.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S03_rho3_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S03_rho3_seed20.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S03_rho3_seed20.gif" alt="Animation S03_rho3_seed20" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S03_rho3_seed20.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S03_rho3_seed20.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="10/20 solved"><title>Wilson 95% CI 30&ndash;70%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-0.0000"><title>1 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="19.1000 80.9000" stroke-dashoffset="-5.0000"><title>4 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="24.1000 75.9000" stroke-dashoffset="-25.0000"><title>5 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="49.1000 50.9000" stroke-dashoffset="-50.0000"><title>10 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">10/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -343,7 +337,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 3.5 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S03_rho3p5_seed20.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S03_rho3p5_seed20.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S03_rho3p5_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S03_rho3p5_seed20.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S03_rho3p5_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S03_rho3p5_seed20.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S03_rho3p5_seed20.gif" alt="Animation S03_rho3p5_seed20" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S03_rho3p5_seed20.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S03_rho3p5_seed20.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="4/20 solved"><title>Wilson 95% CI 8&ndash;42%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-0.0000"><title>1 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-5.0000"><title>1 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-10.0000"><title>2 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="79.1000 20.9000" stroke-dashoffset="-20.0000"><title>16 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">4/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -353,7 +347,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 4.0 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S03_rho4_seed20.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S03_rho4_seed20.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S03_rho4_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S03_rho4_seed20.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S03_rho4_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S03_rho4_seed20.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S03_rho4_seed20.gif" alt="Animation S03_rho4_seed20" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S03_rho4_seed20.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S03_rho4_seed20.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="3/20 solved"><title>Wilson 95% CI 5&ndash;36%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-0.0000"><title>1 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-5.0000"><title>2 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="84.1000 15.9000" stroke-dashoffset="-15.0000"><title>17 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">3/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -363,7 +357,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 4.5 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S03_rho4p5_seed20.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S03_rho4p5_seed20.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S03_rho4p5_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S03_rho4p5_seed20.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S03_rho4p5_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S03_rho4p5_seed20.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S03_rho4p5_seed20.gif" alt="Animation S03_rho4p5_seed20" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S03_rho4p5_seed20.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S03_rho4p5_seed20.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="2/20 solved"><title>Wilson 95% CI 3&ndash;30%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-0.0000"><title>2 recovered directly</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="89.1000 10.9000" stroke-dashoffset="-10.0000"><title>18 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">2/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -378,13 +372,13 @@ code {
 <figure class="init">
 <div class="collabel">Initial state</div>
 <div class="frame">
-<img src="/blender_files_fade20_engagement/init/S04.png" alt="Scenario 04 initial state" loading="lazy" data-variants="{&quot;plain&quot;:&quot;/blender_files_fade20/init/S04.png&quot;,&quot;areas&quot;:&quot;/blender_files_fade20_engagement/init/S04.png&quot;}">
+<img src="assets/engagement/init/S04.png" alt="Scenario 04 initial state" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/init/S04.png&quot;,&quot;areas&quot;:&quot;assets/engagement/init/S04.png&quot;}">
 </div>
 </figure>
 <figure>
 <div class="collabel">Turning radius &rho; = 2.5 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S04_rho2p5_seed08.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S04_rho2p5_seed08.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S04_rho2p5_seed08.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S04_rho2p5_seed08.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S04_rho2p5_seed08.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S04_rho2p5_seed08.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S04_rho2p5_seed08.gif" alt="Animation S04_rho2p5_seed08" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S04_rho2p5_seed08.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S04_rho2p5_seed08.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-0.0000"><title>2 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="89.1000 10.9000" stroke-dashoffset="-10.0000"><title>18 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -394,7 +388,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 3.0 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S04_rho3_seed08.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S04_rho3_seed08.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S04_rho3_seed08.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S04_rho3_seed08.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S04_rho3_seed08.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S04_rho3_seed08.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S04_rho3_seed08.gif" alt="Animation S04_rho3_seed08" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S04_rho3_seed08.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S04_rho3_seed08.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="14.1000 85.9000" stroke-dashoffset="-0.0000"><title>3 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="84.1000 15.9000" stroke-dashoffset="-15.0000"><title>17 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -404,7 +398,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 3.5 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S04_rho3p5_seed08.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S04_rho3p5_seed08.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S04_rho3p5_seed08.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S04_rho3p5_seed08.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S04_rho3p5_seed08.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S04_rho3p5_seed08.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S04_rho3p5_seed08.gif" alt="Animation S04_rho3p5_seed08" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S04_rho3p5_seed08.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S04_rho3p5_seed08.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="99.1000 0.9000" stroke-dashoffset="-0.0000"><title>20 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -414,7 +408,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 4.0 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S04_rho4_seed08.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S04_rho4_seed08.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S04_rho4_seed08.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S04_rho4_seed08.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S04_rho4_seed08.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S04_rho4_seed08.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S04_rho4_seed08.gif" alt="Animation S04_rho4_seed08" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S04_rho4_seed08.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S04_rho4_seed08.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="99.1000 0.9000" stroke-dashoffset="-0.0000"><title>20 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -424,7 +418,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 4.5 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S04_rho4p5_seed08.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S04_rho4p5_seed08.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S04_rho4p5_seed08.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S04_rho4p5_seed08.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S04_rho4p5_seed08.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S04_rho4p5_seed08.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S04_rho4p5_seed08.gif" alt="Animation S04_rho4p5_seed08" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S04_rho4p5_seed08.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S04_rho4p5_seed08.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-0.0000"><title>1 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="94.1000 5.9000" stroke-dashoffset="-5.0000"><title>19 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -439,13 +433,13 @@ code {
 <figure class="init">
 <div class="collabel">Initial state</div>
 <div class="frame">
-<img src="/blender_files_fade20_engagement/init/S05.png" alt="Scenario 05 initial state" loading="lazy" data-variants="{&quot;plain&quot;:&quot;/blender_files_fade20/init/S05.png&quot;,&quot;areas&quot;:&quot;/blender_files_fade20_engagement/init/S05.png&quot;}">
+<img src="assets/engagement/init/S05.png" alt="Scenario 05 initial state" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/init/S05.png&quot;,&quot;areas&quot;:&quot;assets/engagement/init/S05.png&quot;}">
 </div>
 </figure>
 <figure>
 <div class="collabel">Turning radius &rho; = 2.5 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S05_rho2p5_seed09.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S05_rho2p5_seed09.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S05_rho2p5_seed09.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S05_rho2p5_seed09.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S05_rho2p5_seed09.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S05_rho2p5_seed09.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S05_rho2p5_seed09.gif" alt="Animation S05_rho2p5_seed09" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S05_rho2p5_seed09.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S05_rho2p5_seed09.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="19/20 solved"><title>Wilson 95% CI 76&ndash;99%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-0.0000"><title>1 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="89.1000 10.9000" stroke-dashoffset="-5.0000"><title>18 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-95.0000"><title>1 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">19/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -455,7 +449,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 3.0 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S05_rho3_seed09.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S05_rho3_seed09.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S05_rho3_seed09.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S05_rho3_seed09.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S05_rho3_seed09.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S05_rho3_seed09.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S05_rho3_seed09.gif" alt="Animation S05_rho3_seed09" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S05_rho3_seed09.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S05_rho3_seed09.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="18/20 solved"><title>Wilson 95% CI 70&ndash;97%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="14.1000 85.9000" stroke-dashoffset="-0.0000"><title>3 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="74.1000 25.9000" stroke-dashoffset="-15.0000"><title>15 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-90.0000"><title>2 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">18/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -465,7 +459,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 3.5 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S05_rho3p5_seed09.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S05_rho3p5_seed09.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S05_rho3p5_seed09.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S05_rho3p5_seed09.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S05_rho3p5_seed09.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S05_rho3p5_seed09.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S05_rho3p5_seed09.gif" alt="Animation S05_rho3p5_seed09" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S05_rho3p5_seed09.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S05_rho3p5_seed09.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="99.1000 0.9000" stroke-dashoffset="-0.0000"><title>20 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -475,7 +469,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 4.0 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S05_rho4_seed09.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S05_rho4_seed09.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S05_rho4_seed09.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S05_rho4_seed09.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S05_rho4_seed09.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S05_rho4_seed09.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S05_rho4_seed09.gif" alt="Animation S05_rho4_seed09" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S05_rho4_seed09.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S05_rho4_seed09.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="19/20 solved"><title>Wilson 95% CI 76&ndash;99%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-0.0000"><title>2 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="84.1000 15.9000" stroke-dashoffset="-10.0000"><title>17 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-95.0000"><title>1 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">19/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -485,7 +479,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 4.5 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S05_rho4p5_seed09.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S05_rho4p5_seed09.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S05_rho4p5_seed09.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S05_rho4p5_seed09.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S05_rho4p5_seed09.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S05_rho4p5_seed09.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S05_rho4p5_seed09.gif" alt="Animation S05_rho4p5_seed09" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S05_rho4p5_seed09.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S05_rho4p5_seed09.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="18/20 solved"><title>Wilson 95% CI 70&ndash;97%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="14.1000 85.9000" stroke-dashoffset="-0.0000"><title>3 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="74.1000 25.9000" stroke-dashoffset="-15.0000"><title>15 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-90.0000"><title>2 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">18/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -500,13 +494,13 @@ code {
 <figure class="init">
 <div class="collabel">Initial state</div>
 <div class="frame">
-<img src="/blender_files_fade20_engagement/init/S06.png" alt="Scenario 06 initial state" loading="lazy" data-variants="{&quot;plain&quot;:&quot;/blender_files_fade20/init/S06.png&quot;,&quot;areas&quot;:&quot;/blender_files_fade20_engagement/init/S06.png&quot;}">
+<img src="assets/engagement/init/S06.png" alt="Scenario 06 initial state" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/init/S06.png&quot;,&quot;areas&quot;:&quot;assets/engagement/init/S06.png&quot;}">
 </div>
 </figure>
 <figure>
 <div class="collabel">Turning radius &rho; = 2.5 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S06_rho2p5_seed01.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S06_rho2p5_seed01.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S06_rho2p5_seed01.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S06_rho2p5_seed01.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S06_rho2p5_seed01.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S06_rho2p5_seed01.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S06_rho2p5_seed01.gif" alt="Animation S06_rho2p5_seed01" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S06_rho2p5_seed01.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S06_rho2p5_seed01.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="39.1000 60.9000" stroke-dashoffset="-0.0000"><title>8 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="49.1000 50.9000" stroke-dashoffset="-40.0000"><title>10 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-90.0000"><title>2 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -516,7 +510,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 3.0 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S06_rho3_seed01.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S06_rho3_seed01.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S06_rho3_seed01.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S06_rho3_seed01.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S06_rho3_seed01.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S06_rho3_seed01.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S06_rho3_seed01.gif" alt="Animation S06_rho3_seed01" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S06_rho3_seed01.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S06_rho3_seed01.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="19.1000 80.9000" stroke-dashoffset="-0.0000"><title>4 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="54.1000 45.9000" stroke-dashoffset="-20.0000"><title>11 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="24.1000 75.9000" stroke-dashoffset="-75.0000"><title>5 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -526,7 +520,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 3.5 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S06_rho3p5_seed01.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S06_rho3p5_seed01.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S06_rho3p5_seed01.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S06_rho3p5_seed01.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S06_rho3p5_seed01.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S06_rho3p5_seed01.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S06_rho3p5_seed01.gif" alt="Animation S06_rho3p5_seed01" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S06_rho3p5_seed01.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S06_rho3p5_seed01.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="19.1000 80.9000" stroke-dashoffset="-0.0000"><title>4 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="74.1000 25.9000" stroke-dashoffset="-20.0000"><title>15 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-95.0000"><title>1 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -536,7 +530,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 4.0 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S06_rho4_seed01.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S06_rho4_seed01.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S06_rho4_seed01.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S06_rho4_seed01.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S06_rho4_seed01.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S06_rho4_seed01.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S06_rho4_seed01.gif" alt="Animation S06_rho4_seed01" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S06_rho4_seed01.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S06_rho4_seed01.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="14.1000 85.9000" stroke-dashoffset="-0.0000"><title>3 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="74.1000 25.9000" stroke-dashoffset="-15.0000"><title>15 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-90.0000"><title>2 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -546,7 +540,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 4.5 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S06_rho4p5_seed01.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S06_rho4p5_seed01.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S06_rho4p5_seed01.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S06_rho4p5_seed01.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S06_rho4p5_seed01.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S06_rho4p5_seed01.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S06_rho4p5_seed01.gif" alt="Animation S06_rho4p5_seed01" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S06_rho4p5_seed01.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S06_rho4p5_seed01.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="14.1000 85.9000" stroke-dashoffset="-0.0000"><title>3 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="54.1000 45.9000" stroke-dashoffset="-15.0000"><title>11 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="29.1000 70.9000" stroke-dashoffset="-70.0000"><title>6 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -561,13 +555,13 @@ code {
 <figure class="init">
 <div class="collabel">Initial state</div>
 <div class="frame">
-<img src="/blender_files_fade20_engagement/init/S07.png" alt="Scenario 07 initial state" loading="lazy" data-variants="{&quot;plain&quot;:&quot;/blender_files_fade20/init/S07.png&quot;,&quot;areas&quot;:&quot;/blender_files_fade20_engagement/init/S07.png&quot;}">
+<img src="assets/engagement/init/S07.png" alt="Scenario 07 initial state" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/init/S07.png&quot;,&quot;areas&quot;:&quot;assets/engagement/init/S07.png&quot;}">
 </div>
 </figure>
 <figure>
 <div class="collabel">Turning radius &rho; = 2.5 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S07_rho2p5_seed20.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S07_rho2p5_seed20.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S07_rho2p5_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S07_rho2p5_seed20.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S07_rho2p5_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S07_rho2p5_seed20.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S07_rho2p5_seed20.gif" alt="Animation S07_rho2p5_seed20" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S07_rho2p5_seed20.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S07_rho2p5_seed20.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="19/20 solved"><title>Wilson 95% CI 76&ndash;99%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="14.1000 85.9000" stroke-dashoffset="-0.0000"><title>3 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="24.1000 75.9000" stroke-dashoffset="-15.0000"><title>5 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="54.1000 45.9000" stroke-dashoffset="-40.0000"><title>11 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-95.0000"><title>1 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">19/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -577,7 +571,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 3.0 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S07_rho3_seed20.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S07_rho3_seed20.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S07_rho3_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S07_rho3_seed20.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S07_rho3_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S07_rho3_seed20.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S07_rho3_seed20.gif" alt="Animation S07_rho3_seed20" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S07_rho3_seed20.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S07_rho3_seed20.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="19/20 solved"><title>Wilson 95% CI 76&ndash;99%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-0.0000"><title>1 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="19.1000 80.9000" stroke-dashoffset="-5.0000"><title>4 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="69.1000 30.9000" stroke-dashoffset="-25.0000"><title>14 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-95.0000"><title>1 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">19/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -587,7 +581,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 3.5 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S07_rho3p5_seed20.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S07_rho3p5_seed20.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S07_rho3p5_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S07_rho3p5_seed20.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S07_rho3p5_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S07_rho3p5_seed20.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S07_rho3p5_seed20.gif" alt="Animation S07_rho3p5_seed20" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S07_rho3p5_seed20.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S07_rho3p5_seed20.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="19/20 solved"><title>Wilson 95% CI 76&ndash;99%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="19.1000 80.9000" stroke-dashoffset="-0.0000"><title>4 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="29.1000 70.9000" stroke-dashoffset="-20.0000"><title>6 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="44.1000 55.9000" stroke-dashoffset="-50.0000"><title>9 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-95.0000"><title>1 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">19/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -597,7 +591,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 4.0 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S07_rho4_seed20.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S07_rho4_seed20.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S07_rho4_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S07_rho4_seed20.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S07_rho4_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S07_rho4_seed20.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S07_rho4_seed20.gif" alt="Animation S07_rho4_seed20" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S07_rho4_seed20.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S07_rho4_seed20.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="18/20 solved"><title>Wilson 95% CI 70&ndash;97%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="24.1000 75.9000" stroke-dashoffset="-0.0000"><title>5 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="19.1000 80.9000" stroke-dashoffset="-25.0000"><title>4 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="44.1000 55.9000" stroke-dashoffset="-45.0000"><title>9 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-90.0000"><title>2 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">18/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -607,7 +601,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 4.5 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S07_rho4p5_seed20.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S07_rho4p5_seed20.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S07_rho4p5_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S07_rho4p5_seed20.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S07_rho4p5_seed20.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S07_rho4p5_seed20.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S07_rho4p5_seed20.gif" alt="Animation S07_rho4p5_seed20" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S07_rho4p5_seed20.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S07_rho4p5_seed20.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="16/20 solved"><title>Wilson 95% CI 58&ndash;92%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="29.1000 70.9000" stroke-dashoffset="-0.0000"><title>6 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="49.1000 50.9000" stroke-dashoffset="-30.0000"><title>10 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="19.1000 80.9000" stroke-dashoffset="-80.0000"><title>4 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">16/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -622,13 +616,13 @@ code {
 <figure class="init">
 <div class="collabel">Initial state</div>
 <div class="frame">
-<img src="/blender_files_fade20_engagement/init/S08.png" alt="Scenario 08 initial state" loading="lazy" data-variants="{&quot;plain&quot;:&quot;/blender_files_fade20/init/S08.png&quot;,&quot;areas&quot;:&quot;/blender_files_fade20_engagement/init/S08.png&quot;}">
+<img src="assets/engagement/init/S08.png" alt="Scenario 08 initial state" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/init/S08.png&quot;,&quot;areas&quot;:&quot;assets/engagement/init/S08.png&quot;}">
 </div>
 </figure>
 <figure>
 <div class="collabel">Turning radius &rho; = 2.5 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S08_rho2p5_seed06.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S08_rho2p5_seed06.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S08_rho2p5_seed06.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S08_rho2p5_seed06.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S08_rho2p5_seed06.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S08_rho2p5_seed06.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S08_rho2p5_seed06.gif" alt="Animation S08_rho2p5_seed06" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S08_rho2p5_seed06.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S08_rho2p5_seed06.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="14.1000 85.9000" stroke-dashoffset="-0.0000"><title>3 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="84.1000 15.9000" stroke-dashoffset="-15.0000"><title>17 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -638,7 +632,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 3.0 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S08_rho3_seed06.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S08_rho3_seed06.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S08_rho3_seed06.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S08_rho3_seed06.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S08_rho3_seed06.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S08_rho3_seed06.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S08_rho3_seed06.gif" alt="Animation S08_rho3_seed06" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S08_rho3_seed06.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S08_rho3_seed06.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="14.1000 85.9000" stroke-dashoffset="-0.0000"><title>3 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="84.1000 15.9000" stroke-dashoffset="-15.0000"><title>17 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -648,7 +642,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 3.5 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S08_rho3p5_seed06.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S08_rho3p5_seed06.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S08_rho3p5_seed06.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S08_rho3p5_seed06.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S08_rho3p5_seed06.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S08_rho3p5_seed06.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S08_rho3p5_seed06.gif" alt="Animation S08_rho3p5_seed06" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S08_rho3p5_seed06.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S08_rho3p5_seed06.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="19.1000 80.9000" stroke-dashoffset="-0.0000"><title>4 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="79.1000 20.9000" stroke-dashoffset="-20.0000"><title>16 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -658,7 +652,7 @@ code {
 <figure>
 <div class="collabel">Turning radius &rho; = 4.0 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S08_rho4_seed06.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S08_rho4_seed06.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S08_rho4_seed06.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S08_rho4_seed06.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S08_rho4_seed06.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S08_rho4_seed06.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S08_rho4_seed06.gif" alt="Animation S08_rho4_seed06" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S08_rho4_seed06.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S08_rho4_seed06.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-0.0000"><title>2 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="89.1000 10.9000" stroke-dashoffset="-10.0000"><title>18 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -668,7 +662,7 @@ code {
 <figure>
 <div class="collabel">Turning radius Turning radius &rho; = 4.5 m</div>
 <div class="frame">
-<video muted loop playsinline preload="none" poster="/blender_files_fade20_engagement/video_proxy/S08_rho4p5_seed06.jpg" disablepictureinpicture data-src="/blender_files_fade20_engagement/video_proxy/S08_rho4p5_seed06.mp4" data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;/blender_files_fade20/video_proxy/S08_rho4p5_seed06.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20/video_proxy/S08_rho4p5_seed06.jpg&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S08_rho4p5_seed06.mp4&quot;,&quot;poster&quot;:&quot;/blender_files_fade20_engagement/video_proxy/S08_rho4p5_seed06.jpg&quot;}}"></video>
+<img src="assets/engagement/video/S08_rho4p5_seed06.gif" alt="Animation S08_rho4p5_seed06" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/video/S08_rho4p5_seed06.gif&quot;,&quot;areas&quot;:&quot;assets/engagement/video/S08_rho4p5_seed06.gif&quot;}">
 </div>
 <div class="agg">
 <svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-0.0000"><title>2 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="89.1000 10.9000" stroke-dashoffset="-10.0000"><title>18 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
@@ -681,87 +675,12 @@ code {
 <p>Medians cover successful runs only &mdash; where few seeds solve a cell, the survivors are the easy ones, so a median can fall as &rho; grows.</p>
 </footer>
 </div>
-<script>// Only the rows on screen decode. Forty simultaneous 1024x1024 streams
-// stutter on any machine, and the whole set is 222 MB; src is attached
-// on first approach so nothing offscreen is even fetched.
-// Observe the videos themselves rather than a container class. A
-// container selector silently matches nothing the moment the markup is
-// restyled -- which is exactly how this broke once -- and the posters
-// hide the failure, since a tile that never gets a src still looks
-// right. Nothing to keep in sync here.
-const observer = new IntersectionObserver((entries) => {
-  for (const entry of entries) {
-    const video = entry.target;
-    if (entry.isIntersecting) {
-      if (!video.src && video.dataset.src) {
-        video.src = video.dataset.src;
-      }
-      video.play().catch(() => {});
-    } else {
-      video.pause();
-    }
-  }
-// Half a row of lead-in only. A browser allows ~6 connections per host,
-// so a wide margin just queues streams that cannot start; the posters
-// are what make a not-yet-playing tile look right.
-}, { rootMargin: "400px 0px" });
-
-const clips = document.querySelectorAll("video[data-src]");
-
-for (const clip of clips) {
-  observer.observe(clip);
-}
-
-if (!clips.length) {
-  console.warn("No clips found to play -- the page was built without "
-               + "video sources.");
-}
-
-// Global variant switch: every clip and every initial-state still
-// changes together.
-//
-// Two things here are easy to get wrong. A clip that is off screen has
-// no src at all yet, so the handler must rewrite dataset.src or the
-// lazy loader above would later attach the OLD variant when the row is
-// finally scrolled into view. And a clip that is already playing needs
-// its src reassigned and play() called again, because assigning src
-// resets the element. Hence both, every time.
+<script>
+// Global variant switch: every GIF and initial-state image changes together.
 const variantSwitch = document.querySelector("[data-variant-switch]");
 
 function applyVariant(key) {
-
-  for (const video of document.querySelectorAll("video[data-variants]")) {
-
-    let map;
-
-    try {
-      map = JSON.parse(video.dataset.variants);
-    } catch (error) {
-      continue;
-    }
-
-    const pick = map[key];
-
-    // A clip missing from this variant keeps the one it is showing,
-    // rather than going black on a URL that would 404.
-    if (!pick) {
-      continue;
-    }
-
-    video.dataset.src = pick.src;
-
-    if (pick.poster) {
-      video.poster = pick.poster;
-    }
-
-    if (video.src) {
-      video.src = pick.src;
-      video.play().catch(() => {});
-    }
-  }
-
   for (const image of document.querySelectorAll("img[data-variants]")) {
-
     let map;
 
     try {
@@ -782,6 +701,7 @@ if (variantSwitch) {
       applyVariant(event.target.value);
     }
   });
-}</script>
+}
+</script>
 </body>
 </html>
