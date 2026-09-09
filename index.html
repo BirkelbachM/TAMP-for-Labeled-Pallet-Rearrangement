@@ -2,877 +2,133 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TAMP for Labeled Pallet Rearrangement</title>
-<style>:root {
-  --ink: #1f2328;
-  --muted: #767e88;
-  --label: #8a929c;
-  --rule: #e4e2de;
-  --bg: #ffffff;
-  --panel: #f5f4f1;
-  /* Okabe & Ito (2008), the colourblind-safe qualitative set.
-     Taken in the order blue / sky blue / orange / vermillion so the
-     four outcome classes still read easiest-to-hardest. */
-  --o0: #0072b2;
-  --o1: #56b4e9;
-  --o2: #e69f00;
-  --o3: #d55e00;
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  padding: 64px 32px 96px;
-  background: var(--bg);
-  color: var(--ink);
-  font: 15px/1.6 "Helvetica Neue", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
-.wrap { max-width: 1780px; margin: 0 auto; }
-.masthead { text-align: center; margin-bottom: 34px; }
-h1 { font-size: 32px; font-weight: 700; margin: 0 0 10px; letter-spacing: -0.4px; }
-.lede {
-  margin: 0; color: var(--muted); font-size: 15px;
-  font-variant-numeric: tabular-nums;
-}
-
-.legend {
-  display: flex; justify-content: center; flex-wrap: wrap;
-  gap: 22px; margin: 0 0 46px; font-size: 13px; color: var(--muted);
-}
-.legend span { display: inline-flex; align-items: center; gap: 7px; }
-.swatch { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-.sw0 { background: var(--o0); }
-.sw1 { background: var(--o1); }
-.sw2 { background: var(--o2); }
-.sw3 { background: var(--o3); }
-
-/* Global variant control. Sits between the masthead and the grid
-   because it governs every tile below it, not any one row. */
-.switch {
-  display: flex; justify-content: center; align-items: center;
-  flex-wrap: wrap; gap: 6px; margin: 0 0 46px;
-}
-.switch-label {
-  font-size: 13px; color: var(--label); margin-right: 8px;
-  letter-spacing: 0.02em;
-}
-.switch label {
-  font-size: 13px; cursor: pointer; padding: 5px 13px;
-  border: 1px solid var(--rule); border-radius: 2px;
-  color: var(--muted); background: var(--bg);
-  display: inline-flex; align-items: center;
-}
-/* The radio itself is redundant once the label is styled as a button,
-   but it stays in the DOM so the control is keyboard-operable and
-   arrow keys move through the group. */
-.switch input { position: absolute; opacity: 0; pointer-events: none; }
-.switch label:hover { border-color: var(--muted); color: var(--ink); }
-.switch input:checked + span { color: var(--bg); }
-.switch label:has(input:checked) {
-  background: var(--ink); border-color: var(--ink);
-}
-.switch label:has(input:focus-visible) {
-  outline: 2px solid var(--o0); outline-offset: 2px;
-}
-
-.scenario { margin-bottom: 56px; }
-.scenario > h3 {
-  text-align: center; font-size: 18px; font-weight: 700;
-  margin: 0 0 18px; letter-spacing: -0.1px;
-}
-.grid {
-  display: grid;
-  /* All six columns equal: an init tile even slightly narrower than
-     the clips reads as misalignment, not as intent. What separates it
-     is its label and the absence of metrics under it. */
-  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
-  gap: 20px;
-}
-figure { margin: 0; }
-.frame img {
-  width: 100%; height: 100%; display: block; object-fit: cover;
-}
-.collabel {
-  text-align: center; font-weight: 700; font-size: 14px;
-  margin-bottom: 9px;
-}
-.frame {
-  position: relative; aspect-ratio: 1 / 1;
-  background: var(--panel);
-  border: 1px solid var(--rule);
-  overflow: hidden;
-}
-video {
-  width: 100%; height: 100%; display: block; object-fit: cover;
-  background: var(--panel);
-  /* Normally the clips autoplay, but keep pointer events available so
-     Safari can expose controls if playback fails. */
-  pointer-events: auto;
-}
-.missing {
-  position: absolute; inset: 0; display: flex; align-items: center;
-  justify-content: center; color: var(--muted); font-size: 12px;
-  text-align: center; padding: 12px;
-}
-
-/* Aggregate block: what all 20 seeds of this cell did.
-   Donut on the left, medians on the right -- a tile is far wider than
-   the table is tall, so stacking them wasted the room. */
-.agg {
-  display: flex; align-items: center; gap: 10px; padding-top: 13px;
-  /* Deliberately NOT flex-wrap: that wraps per tile on content width,
-     so the one cell reading "134 (31-215) s" drops its table below the
-     donut while its five neighbours stay side by side, and the row
-     comes out ragged. The stacking decision has to be width-driven
-     (the media query below) so a whole row switches together. */
-}
-.donut { flex: none; width: 78px; height: 78px; display: block; }
-.donut circle { fill: none; stroke-width: 9; }
-.donut .track { stroke: var(--panel); }
-.donut .s0 { stroke: var(--o0); }
-.donut .s1 { stroke: var(--o1); }
-.donut .s2 { stroke: var(--o2); }
-.donut .s3 { stroke: var(--o3); }
-/* Sizes are viewBox units: the svg renders at 90px for a 100 unit box,
-   so 16 here is about 14 real pixels. */
-.donut text {
-  font-family: inherit; font-weight: 700; fill: var(--ink);
-  font-size: 16px; font-variant-numeric: tabular-nums;
-}
-.donut text.sub { font-weight: 400; font-size: 8px; fill: var(--label); }
-table.stats {
-  flex: 1; min-width: 0; border-collapse: collapse; font-size: 12.5px;
-}
-table.stats th {
-  text-align: left; font-weight: 400; color: var(--label);
-  padding: 1px 0; white-space: nowrap;
-}
-table.stats td {
-  text-align: right; padding: 1px 0; font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-.iqr { color: var(--muted); font-size: 0.85em; }
-
-/* Below this the six tiles are too narrow for donut and table side by
-   side. All six switch at once, because the trigger is the viewport
-   and not any one cell's numbers. The threshold was measured, not
-   guessed: at a 1700 px viewport a table still spills out of its
-   figure, at 1800 none does. */
-@media (max-width: 1820px) {
-  .agg { flex-direction: column; align-items: flex-start; gap: 7px; }
-  table.stats { width: 100%; flex: none; }
-}
-
-footer {
-  margin: 76px auto 0; padding-top: 20px; border-top: 1px solid var(--rule);
-  color: var(--muted); font-size: 13px; max-width: 84ch; text-align: center;
-}
-footer p { margin: 0; }
-code {
-  font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 0.92em;
-}</style>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>iPhone MP4 diagnostic</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin:20px;line-height:1.45;color:#111}
+video{width:100%;max-width:520px;background:#ddd;display:block;margin:10px 0 20px}
+pre{white-space:pre-wrap;word-break:break-word;background:#f3f3f3;padding:12px;border-radius:8px;font-size:12px}
+button{font-size:16px;padding:10px 14px;margin:5px 5px 15px 0}
+section{margin-bottom:32px}
+</style>
 </head>
 <body>
-<div class="wrap">
-<div class="masthead">
-<h1>Task and Motion Planning for Labeled Pallet Rearrangement with a Non-Holonomic Forklift</h1>
-<p class="lede">8 scenarios &times; 5 turning radii &times; 20 seeds</p>
-</div>
-<div class="legend">
-<span><i class="swatch sw0"></i>first plan verified</span>
-<span><i class="swatch sw1"></i>recovered directly</span>
-<span><i class="swatch sw2"></i>recovered via relocation</span>
-<span><i class="swatch sw3"></i>no plan found</span>
-</div>
-<div class="switch" data-variant-switch>
-<span class="switch-label">Engagement areas</span>
-<label><input type="radio" name="variant" value="plain"><span>Off</span></label>
-<label><input type="radio" name="variant" value="areas" checked><span>On</span></label>
-</div>
-<section class="scenario">
-<h3>Scenario 01</h3>
-<div class="grid" style="--cols: 6">
-<figure class="init">
-<div class="collabel">Initial state</div>
-<div class="frame">
-<img src="assets/engagement/init/S01.png" alt="Scenario 01 initial state" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/init/S01.png&quot;,&quot;areas&quot;:&quot;assets/engagement/init/S01.png&quot;}">
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 2.5 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S01_rho2p5_seed20.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S01_rho2p5_seed20.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S01_rho2p5_seed20.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="24.1000 75.9000" stroke-dashoffset="-0.0000"><title>5 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="44.1000 55.9000" stroke-dashoffset="-25.0000"><title>9 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="29.1000 70.9000" stroke-dashoffset="-70.0000"><title>6 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>1 <span class="iqr">(1&ndash;2)</span></td></tr><tr><th>actions</th><td>16 <span class="iqr">(16&ndash;18)</span></td></tr><tr><th>motion queries</th><td>17 <span class="iqr">(17&ndash;19)</span></td></tr><tr><th>solve time</th><td>20 <span class="iqr">(15&ndash;40)</span> s</td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 3.0 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S01_rho3_seed20.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S01_rho3_seed20.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S01_rho3_seed20.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="14.1000 85.9000" stroke-dashoffset="-0.0000"><title>3 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="24.1000 75.9000" stroke-dashoffset="-15.0000"><title>5 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="59.1000 40.9000" stroke-dashoffset="-40.0000"><title>12 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>2 <span class="iqr">(1&ndash;5)</span></td></tr><tr><th>actions</th><td>18 <span class="iqr">(16&ndash;20)</span></td></tr><tr><th>motion queries</th><td>22 <span class="iqr">(17&ndash;23)</span></td></tr><tr><th>solve time</th><td>53 <span class="iqr">(29&ndash;113)</span> s</td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 3.5 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S01_rho3p5_seed20.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S01_rho3p5_seed20.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S01_rho3p5_seed20.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-0.0000"><title>1 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="39.1000 60.9000" stroke-dashoffset="-5.0000"><title>8 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="54.1000 45.9000" stroke-dashoffset="-45.0000"><title>11 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>4 <span class="iqr">(2&ndash;5)</span></td></tr><tr><th>actions</th><td>18 <span class="iqr">(16&ndash;18)</span></td></tr><tr><th>motion queries</th><td>21 <span class="iqr">(19&ndash;23)</span></td></tr><tr><th>solve time</th><td>76 <span class="iqr">(31&ndash;130)</span> s</td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 4.0 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S01_rho4_seed20.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S01_rho4_seed20.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S01_rho4_seed20.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="18/20 solved"><title>Wilson 95% CI 70&ndash;97%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-0.0000"><title>1 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="44.1000 55.9000" stroke-dashoffset="-5.0000"><title>9 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="39.1000 60.9000" stroke-dashoffset="-50.0000"><title>8 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-90.0000"><title>2 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">18/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>4 <span class="iqr">(2&ndash;7)</span></td></tr><tr><th>actions</th><td>16 <span class="iqr">(16&ndash;18)</span></td></tr><tr><th>motion queries</th><td>22 <span class="iqr">(19&ndash;24)</span></td></tr><tr><th>solve time</th><td>81 <span class="iqr">(28&ndash;243)</span> s</td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 4.5 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S01_rho4p5_seed20.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S01_rho4p5_seed20.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S01_rho4p5_seed20.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="17/20 solved"><title>Wilson 95% CI 64&ndash;95%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-0.0000"><title>1 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="14.1000 85.9000" stroke-dashoffset="-5.0000"><title>3 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="64.1000 35.9000" stroke-dashoffset="-20.0000"><title>13 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="14.1000 85.9000" stroke-dashoffset="-85.0000"><title>3 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">17/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>3 <span class="iqr">(3&ndash;6)</span></td></tr><tr><th>actions</th><td>18 <span class="iqr">(18&ndash;20)</span></td></tr><tr><th>motion queries</th><td>23 <span class="iqr">(19&ndash;25)</span></td></tr><tr><th>solve time</th><td>81 <span class="iqr">(52&ndash;207)</span> s</td></tr></table>
-</div>
-</figure>
-</div>
+<h1>iPhone MP4 diagnostic</h1>
+<p>This page tests the same MP4 in two ways: directly in &lt;video&gt;, and via fetch() → Blob.</p>
+
+<section>
+<h2>1. Direct video source</h2>
+<video id="direct" controls muted playsinline preload="metadata"
+       src="assets/engagement/video/S01_rho2p5_seed20.mp4"></video>
+<button id="directPlay">Play direct video</button>
+<pre id="directLog">waiting...</pre>
 </section>
-<section class="scenario">
-<h3>Scenario 02</h3>
-<div class="grid" style="--cols: 6">
-<figure class="init">
-<div class="collabel">Initial state</div>
-<div class="frame">
-<img src="assets/engagement/init/S02.png" alt="Scenario 02 initial state" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/init/S02.png&quot;,&quot;areas&quot;:&quot;assets/engagement/init/S02.png&quot;}">
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 2.5 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S02_rho2p5_seed20.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S02_rho2p5_seed20.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S02_rho2p5_seed20.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="64.1000 35.9000" stroke-dashoffset="-0.0000"><title>13 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-65.0000"><title>1 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="29.1000 70.9000" stroke-dashoffset="-70.0000"><title>6 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>0 <span class="iqr">(0&ndash;1)</span></td></tr><tr><th>actions</th><td>2 <span class="iqr">(2&ndash;6)</span></td></tr><tr><th>motion queries</th><td>2 <span class="iqr">(2&ndash;7)</span></td></tr><tr><th>solve time</th><td>15 <span class="iqr">(4&ndash;26)</span> s</td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 3.0 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S02_rho3_seed20.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S02_rho3_seed20.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S02_rho3_seed20.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="29.1000 70.9000" stroke-dashoffset="-0.0000"><title>6 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="69.1000 30.9000" stroke-dashoffset="-30.0000"><title>14 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>1 <span class="iqr">(0&ndash;3)</span></td></tr><tr><th>actions</th><td>6 <span class="iqr">(2&ndash;8)</span></td></tr><tr><th>motion queries</th><td>7 <span class="iqr">(2&ndash;12)</span></td></tr><tr><th>solve time</th><td>50 <span class="iqr">(23&ndash;92)</span> s</td></tr><tr><th>extra relocations</th><td>1 <span class="iqr">(0&ndash;2)</span></td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 3.5 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S02_rho3p5_seed20.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S02_rho3p5_seed20.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S02_rho3p5_seed20.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="39.1000 60.9000" stroke-dashoffset="-0.0000"><title>8 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="59.1000 40.9000" stroke-dashoffset="-40.0000"><title>12 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>2 <span class="iqr">(0&ndash;5)</span></td></tr><tr><th>actions</th><td>7 <span class="iqr">(2&ndash;10)</span></td></tr><tr><th>motion queries</th><td>8 <span class="iqr">(2&ndash;16)</span></td></tr><tr><th>solve time</th><td>59 <span class="iqr">(22&ndash;136)</span> s</td></tr><tr><th>extra relocations</th><td>2 <span class="iqr">(0&ndash;2)</span></td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 4.0 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S02_rho4_seed20.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S02_rho4_seed20.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S02_rho4_seed20.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="24.1000 75.9000" stroke-dashoffset="-0.0000"><title>5 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-25.0000"><title>2 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="64.1000 35.9000" stroke-dashoffset="-35.0000"><title>13 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>2 <span class="iqr">(1&ndash;3)</span></td></tr><tr><th>actions</th><td>6 <span class="iqr">(2&ndash;10)</span></td></tr><tr><th>motion queries</th><td>8 <span class="iqr">(4&ndash;12)</span></td></tr><tr><th>solve time</th><td>81 <span class="iqr">(23&ndash;124)</span> s</td></tr><tr><th>extra relocations</th><td>1 <span class="iqr">(0&ndash;2)</span></td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 4.5 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S02_rho4p5_seed20.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S02_rho4p5_seed20.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S02_rho4p5_seed20.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="17/20 solved"><title>Wilson 95% CI 64&ndash;95%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="24.1000 75.9000" stroke-dashoffset="-0.0000"><title>5 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-25.0000"><title>1 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="54.1000 45.9000" stroke-dashoffset="-30.0000"><title>11 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="14.1000 85.9000" stroke-dashoffset="-85.0000"><title>3 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">17/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>3 <span class="iqr">(0&ndash;4)</span></td></tr><tr><th>actions</th><td>10 <span class="iqr">(2&ndash;10)</span></td></tr><tr><th>motion queries</th><td>12 <span class="iqr">(2&ndash;14)</span></td></tr><tr><th>solve time</th><td>134 <span class="iqr">(31&ndash;215)</span> s</td></tr><tr><th>extra relocations</th><td>2 <span class="iqr">(0&ndash;2)</span></td></tr></table>
-</div>
-</figure>
-</div>
+
+<section>
+<h2>2. Fetch → Blob source</h2>
+<video id="blobVideo" controls muted playsinline preload="metadata"></video>
+<button id="blobLoad">Fetch, load and play Blob</button>
+<pre id="blobLog">waiting...</pre>
 </section>
-<section class="scenario">
-<h3>Scenario 03</h3>
-<div class="grid" style="--cols: 6">
-<figure class="init">
-<div class="collabel">Initial state</div>
-<div class="frame">
-<img src="assets/engagement/init/S03.png" alt="Scenario 03 initial state" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/init/S03.png&quot;,&quot;areas&quot;:&quot;assets/engagement/init/S03.png&quot;}">
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 2.5 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S03_rho2p5_seed20.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S03_rho2p5_seed20.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S03_rho2p5_seed20.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="19/20 solved"><title>Wilson 95% CI 76&ndash;99%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="29.1000 70.9000" stroke-dashoffset="-0.0000"><title>6 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="64.1000 35.9000" stroke-dashoffset="-30.0000"><title>13 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-95.0000"><title>1 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">19/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>10 <span class="iqr">(4&ndash;26)</span></td></tr><tr><th>actions</th><td>18 <span class="iqr">(12&ndash;19)</span></td></tr><tr><th>motion queries</th><td>30 <span class="iqr">(21&ndash;43)</span></td></tr><tr><th>solve time</th><td>172 <span class="iqr">(105&ndash;390)</span> s</td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 3.0 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S03_rho3_seed20.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S03_rho3_seed20.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S03_rho3_seed20.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="10/20 solved"><title>Wilson 95% CI 30&ndash;70%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-0.0000"><title>1 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="19.1000 80.9000" stroke-dashoffset="-5.0000"><title>4 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="24.1000 75.9000" stroke-dashoffset="-25.0000"><title>5 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="49.1000 50.9000" stroke-dashoffset="-50.0000"><title>10 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">10/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>9 <span class="iqr">(5&ndash;15)</span></td></tr><tr><th>actions</th><td>13 <span class="iqr">(12&ndash;18)</span></td></tr><tr><th>motion queries</th><td>24 <span class="iqr">(18&ndash;34)</span></td></tr><tr><th>solve time</th><td>250 <span class="iqr">(185&ndash;376)</span> s</td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 3.5 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S03_rho3p5_seed20.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S03_rho3p5_seed20.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S03_rho3p5_seed20.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="4/20 solved"><title>Wilson 95% CI 8&ndash;42%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-0.0000"><title>1 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-5.0000"><title>1 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-10.0000"><title>2 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="79.1000 20.9000" stroke-dashoffset="-20.0000"><title>16 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">4/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>2 <span class="iqr">(1&ndash;5)</span></td></tr><tr><th>actions</th><td>13 <span class="iqr">(12&ndash;16)</span></td></tr><tr><th>motion queries</th><td>15 <span class="iqr">(13&ndash;21)</span></td></tr><tr><th>solve time</th><td>23 <span class="iqr">(17&ndash;102)</span> s</td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 4.0 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S03_rho4_seed20.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S03_rho4_seed20.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S03_rho4_seed20.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="3/20 solved"><title>Wilson 95% CI 5&ndash;36%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-0.0000"><title>1 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-5.0000"><title>2 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="84.1000 15.9000" stroke-dashoffset="-15.0000"><title>17 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">3/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>5 <span class="iqr">(4&ndash;6)</span></td></tr><tr><th>actions</th><td>18 <span class="iqr">(15&ndash;18)</span></td></tr><tr><th>motion queries</th><td>23 <span class="iqr">(18&ndash;24)</span></td></tr><tr><th>solve time</th><td>63 <span class="iqr">(39&ndash;77)</span> s</td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 4.5 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S03_rho4p5_seed20.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S03_rho4p5_seed20.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S03_rho4p5_seed20.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="2/20 solved"><title>Wilson 95% CI 3&ndash;30%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-0.0000"><title>2 recovered directly</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="89.1000 10.9000" stroke-dashoffset="-10.0000"><title>18 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">2/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>1 <span class="iqr">(1&ndash;1)</span></td></tr><tr><th>actions</th><td>12 <span class="iqr">(12&ndash;12)</span></td></tr><tr><th>motion queries</th><td>13 <span class="iqr">(13&ndash;13)</span></td></tr><tr><th>solve time</th><td>10 <span class="iqr">(10&ndash;10)</span> s</td></tr></table>
-</div>
-</figure>
-</div>
-</section>
-<section class="scenario">
-<h3>Scenario 04</h3>
-<div class="grid" style="--cols: 6">
-<figure class="init">
-<div class="collabel">Initial state</div>
-<div class="frame">
-<img src="assets/engagement/init/S04.png" alt="Scenario 04 initial state" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/init/S04.png&quot;,&quot;areas&quot;:&quot;assets/engagement/init/S04.png&quot;}">
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 2.5 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S04_rho2p5_seed08.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S04_rho2p5_seed08.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S04_rho2p5_seed08.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-0.0000"><title>2 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="89.1000 10.9000" stroke-dashoffset="-10.0000"><title>18 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>2 <span class="iqr">(2&ndash;3)</span></td></tr><tr><th>actions</th><td>18 <span class="iqr">(18&ndash;20)</span></td></tr><tr><th>motion queries</th><td>20 <span class="iqr">(19&ndash;23)</span></td></tr><tr><th>solve time</th><td>26 <span class="iqr">(19&ndash;39)</span> s</td></tr><tr><th>extra relocations</th><td>1 <span class="iqr">(1&ndash;1)</span></td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 3.0 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S04_rho3_seed08.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S04_rho3_seed08.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S04_rho3_seed08.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="14.1000 85.9000" stroke-dashoffset="-0.0000"><title>3 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="84.1000 15.9000" stroke-dashoffset="-15.0000"><title>17 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>2 <span class="iqr">(1&ndash;3)</span></td></tr><tr><th>actions</th><td>17 <span class="iqr">(16&ndash;20)</span></td></tr><tr><th>motion queries</th><td>18 <span class="iqr">(17&ndash;24)</span></td></tr><tr><th>solve time</th><td>21 <span class="iqr">(19&ndash;30)</span> s</td></tr><tr><th>extra relocations</th><td>1 <span class="iqr">(1&ndash;1)</span></td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 3.5 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S04_rho3p5_seed08.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S04_rho3p5_seed08.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S04_rho3p5_seed08.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="99.1000 0.9000" stroke-dashoffset="-0.0000"><title>20 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>3 <span class="iqr">(2&ndash;4)</span></td></tr><tr><th>actions</th><td>20 <span class="iqr">(18&ndash;20)</span></td></tr><tr><th>motion queries</th><td>22 <span class="iqr">(21&ndash;24)</span></td></tr><tr><th>solve time</th><td>35 <span class="iqr">(29&ndash;55)</span> s</td></tr><tr><th>extra relocations</th><td>1 <span class="iqr">(1&ndash;1)</span></td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 4.0 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S04_rho4_seed08.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S04_rho4_seed08.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S04_rho4_seed08.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="99.1000 0.9000" stroke-dashoffset="-0.0000"><title>20 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>4 <span class="iqr">(2&ndash;4)</span></td></tr><tr><th>actions</th><td>20 <span class="iqr">(18&ndash;22)</span></td></tr><tr><th>motion queries</th><td>22 <span class="iqr">(22&ndash;26)</span></td></tr><tr><th>solve time</th><td>34 <span class="iqr">(31&ndash;77)</span> s</td></tr><tr><th>extra relocations</th><td>1 <span class="iqr">(1&ndash;1)</span></td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 4.5 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S04_rho4p5_seed08.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S04_rho4p5_seed08.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S04_rho4p5_seed08.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-0.0000"><title>1 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="94.1000 5.9000" stroke-dashoffset="-5.0000"><title>19 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>3 <span class="iqr">(3&ndash;6)</span></td></tr><tr><th>actions</th><td>21 <span class="iqr">(20&ndash;22)</span></td></tr><tr><th>motion queries</th><td>25 <span class="iqr">(22&ndash;27)</span></td></tr><tr><th>solve time</th><td>52 <span class="iqr">(38&ndash;71)</span> s</td></tr><tr><th>extra relocations</th><td>1 <span class="iqr">(1&ndash;1)</span></td></tr></table>
-</div>
-</figure>
-</div>
-</section>
-<section class="scenario">
-<h3>Scenario 05</h3>
-<div class="grid" style="--cols: 6">
-<figure class="init">
-<div class="collabel">Initial state</div>
-<div class="frame">
-<img src="assets/engagement/init/S05.png" alt="Scenario 05 initial state" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/init/S05.png&quot;,&quot;areas&quot;:&quot;assets/engagement/init/S05.png&quot;}">
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 2.5 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S05_rho2p5_seed09.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S05_rho2p5_seed09.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S05_rho2p5_seed09.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="19/20 solved"><title>Wilson 95% CI 76&ndash;99%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-0.0000"><title>1 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="89.1000 10.9000" stroke-dashoffset="-5.0000"><title>18 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-95.0000"><title>1 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">19/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>2 <span class="iqr">(1&ndash;4)</span></td></tr><tr><th>actions</th><td>28 <span class="iqr">(26&ndash;28)</span></td></tr><tr><th>motion queries</th><td>30 <span class="iqr">(28&ndash;32)</span></td></tr><tr><th>solve time</th><td>83 <span class="iqr">(62&ndash;94)</span> s</td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 3.0 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S05_rho3_seed09.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S05_rho3_seed09.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S05_rho3_seed09.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="18/20 solved"><title>Wilson 95% CI 70&ndash;97%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="14.1000 85.9000" stroke-dashoffset="-0.0000"><title>3 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="74.1000 25.9000" stroke-dashoffset="-15.0000"><title>15 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-90.0000"><title>2 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">18/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>2 <span class="iqr">(1&ndash;3)</span></td></tr><tr><th>actions</th><td>28 <span class="iqr">(26&ndash;28)</span></td></tr><tr><th>motion queries</th><td>30 <span class="iqr">(27&ndash;32)</span></td></tr><tr><th>solve time</th><td>79 <span class="iqr">(71&ndash;95)</span> s</td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 3.5 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S05_rho3p5_seed09.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S05_rho3p5_seed09.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S05_rho3p5_seed09.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="99.1000 0.9000" stroke-dashoffset="-0.0000"><title>20 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>4 <span class="iqr">(2&ndash;6)</span></td></tr><tr><th>actions</th><td>28 <span class="iqr">(26&ndash;28)</span></td></tr><tr><th>motion queries</th><td>32 <span class="iqr">(30&ndash;34)</span></td></tr><tr><th>solve time</th><td>144 <span class="iqr">(92&ndash;157)</span> s</td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 4.0 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S05_rho4_seed09.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S05_rho4_seed09.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S05_rho4_seed09.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="19/20 solved"><title>Wilson 95% CI 76&ndash;99%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-0.0000"><title>2 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="84.1000 15.9000" stroke-dashoffset="-10.0000"><title>17 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-95.0000"><title>1 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">19/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>3 <span class="iqr">(2&ndash;7)</span></td></tr><tr><th>actions</th><td>26 <span class="iqr">(26&ndash;28)</span></td></tr><tr><th>motion queries</th><td>30 <span class="iqr">(30&ndash;35)</span></td></tr><tr><th>solve time</th><td>165 <span class="iqr">(114&ndash;223)</span> s</td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 4.5 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S05_rho4p5_seed09.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S05_rho4p5_seed09.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S05_rho4p5_seed09.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="18/20 solved"><title>Wilson 95% CI 70&ndash;97%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="14.1000 85.9000" stroke-dashoffset="-0.0000"><title>3 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="74.1000 25.9000" stroke-dashoffset="-15.0000"><title>15 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-90.0000"><title>2 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">18/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>8 <span class="iqr">(2&ndash;10)</span></td></tr><tr><th>actions</th><td>28 <span class="iqr">(26&ndash;30)</span></td></tr><tr><th>motion queries</th><td>35 <span class="iqr">(31&ndash;38)</span></td></tr><tr><th>solve time</th><td>216 <span class="iqr">(113&ndash;322)</span> s</td></tr></table>
-</div>
-</figure>
-</div>
-</section>
-<section class="scenario">
-<h3>Scenario 06</h3>
-<div class="grid" style="--cols: 6">
-<figure class="init">
-<div class="collabel">Initial state</div>
-<div class="frame">
-<img src="assets/engagement/init/S06.png" alt="Scenario 06 initial state" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/init/S06.png&quot;,&quot;areas&quot;:&quot;assets/engagement/init/S06.png&quot;}">
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 2.5 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S06_rho2p5_seed01.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S06_rho2p5_seed01.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S06_rho2p5_seed01.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="39.1000 60.9000" stroke-dashoffset="-0.0000"><title>8 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="49.1000 50.9000" stroke-dashoffset="-40.0000"><title>10 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-90.0000"><title>2 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>1 <span class="iqr">(0&ndash;2)</span></td></tr><tr><th>actions</th><td>24 <span class="iqr">(24&ndash;24)</span></td></tr><tr><th>motion queries</th><td>25 <span class="iqr">(24&ndash;26)</span></td></tr><tr><th>solve time</th><td>23 <span class="iqr">(17&ndash;35)</span> s</td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 3.0 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S06_rho3_seed01.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S06_rho3_seed01.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S06_rho3_seed01.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="19.1000 80.9000" stroke-dashoffset="-0.0000"><title>4 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="54.1000 45.9000" stroke-dashoffset="-20.0000"><title>11 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="24.1000 75.9000" stroke-dashoffset="-75.0000"><title>5 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>2 <span class="iqr">(1&ndash;3)</span></td></tr><tr><th>actions</th><td>24 <span class="iqr">(24&ndash;24)</span></td></tr><tr><th>motion queries</th><td>26 <span class="iqr">(25&ndash;29)</span></td></tr><tr><th>solve time</th><td>28 <span class="iqr">(22&ndash;84)</span> s</td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 3.5 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S06_rho3p5_seed01.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S06_rho3p5_seed01.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S06_rho3p5_seed01.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="19.1000 80.9000" stroke-dashoffset="-0.0000"><title>4 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="74.1000 25.9000" stroke-dashoffset="-20.0000"><title>15 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-95.0000"><title>1 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>2 <span class="iqr">(1&ndash;2)</span></td></tr><tr><th>actions</th><td>24 <span class="iqr">(24&ndash;24)</span></td></tr><tr><th>motion queries</th><td>26 <span class="iqr">(25&ndash;26)</span></td></tr><tr><th>solve time</th><td>59 <span class="iqr">(23&ndash;103)</span> s</td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 4.0 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S06_rho4_seed01.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S06_rho4_seed01.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S06_rho4_seed01.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="14.1000 85.9000" stroke-dashoffset="-0.0000"><title>3 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="74.1000 25.9000" stroke-dashoffset="-15.0000"><title>15 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-90.0000"><title>2 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>1 <span class="iqr">(1&ndash;3)</span></td></tr><tr><th>actions</th><td>24 <span class="iqr">(24&ndash;24)</span></td></tr><tr><th>motion queries</th><td>25 <span class="iqr">(25&ndash;27)</span></td></tr><tr><th>solve time</th><td>44 <span class="iqr">(33&ndash;83)</span> s</td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 4.5 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S06_rho4p5_seed01.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S06_rho4p5_seed01.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S06_rho4p5_seed01.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="14.1000 85.9000" stroke-dashoffset="-0.0000"><title>3 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="54.1000 45.9000" stroke-dashoffset="-15.0000"><title>11 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="29.1000 70.9000" stroke-dashoffset="-70.0000"><title>6 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>2 <span class="iqr">(1&ndash;3)</span></td></tr><tr><th>actions</th><td>24 <span class="iqr">(24&ndash;26)</span></td></tr><tr><th>motion queries</th><td>26 <span class="iqr">(25&ndash;28)</span></td></tr><tr><th>solve time</th><td>51 <span class="iqr">(33&ndash;88)</span> s</td></tr></table>
-</div>
-</figure>
-</div>
-</section>
-<section class="scenario">
-<h3>Scenario 07</h3>
-<div class="grid" style="--cols: 6">
-<figure class="init">
-<div class="collabel">Initial state</div>
-<div class="frame">
-<img src="assets/engagement/init/S07.png" alt="Scenario 07 initial state" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/init/S07.png&quot;,&quot;areas&quot;:&quot;assets/engagement/init/S07.png&quot;}">
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 2.5 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S07_rho2p5_seed20.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S07_rho2p5_seed20.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S07_rho2p5_seed20.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="19/20 solved"><title>Wilson 95% CI 76&ndash;99%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="14.1000 85.9000" stroke-dashoffset="-0.0000"><title>3 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="24.1000 75.9000" stroke-dashoffset="-15.0000"><title>5 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="54.1000 45.9000" stroke-dashoffset="-40.0000"><title>11 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-95.0000"><title>1 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">19/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>3 <span class="iqr">(1&ndash;4)</span></td></tr><tr><th>actions</th><td>26 <span class="iqr">(24&ndash;28)</span></td></tr><tr><th>motion queries</th><td>27 <span class="iqr">(26&ndash;32)</span></td></tr><tr><th>solve time</th><td>96 <span class="iqr">(77&ndash;178)</span> s</td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 3.0 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S07_rho3_seed20.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S07_rho3_seed20.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S07_rho3_seed20.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="19/20 solved"><title>Wilson 95% CI 76&ndash;99%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-0.0000"><title>1 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="19.1000 80.9000" stroke-dashoffset="-5.0000"><title>4 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="69.1000 30.9000" stroke-dashoffset="-25.0000"><title>14 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-95.0000"><title>1 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">19/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>5 <span class="iqr">(2&ndash;6)</span></td></tr><tr><th>actions</th><td>26 <span class="iqr">(25&ndash;28)</span></td></tr><tr><th>motion queries</th><td>30 <span class="iqr">(28&ndash;34)</span></td></tr><tr><th>solve time</th><td>129 <span class="iqr">(86&ndash;176)</span> s</td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 3.5 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S07_rho3p5_seed20.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S07_rho3p5_seed20.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S07_rho3p5_seed20.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="19/20 solved"><title>Wilson 95% CI 76&ndash;99%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="19.1000 80.9000" stroke-dashoffset="-0.0000"><title>4 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="29.1000 70.9000" stroke-dashoffset="-20.0000"><title>6 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="44.1000 55.9000" stroke-dashoffset="-50.0000"><title>9 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="4.1000 95.9000" stroke-dashoffset="-95.0000"><title>1 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">19/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>2 <span class="iqr">(1&ndash;3)</span></td></tr><tr><th>actions</th><td>24 <span class="iqr">(24&ndash;28)</span></td></tr><tr><th>motion queries</th><td>27 <span class="iqr">(25&ndash;32)</span></td></tr><tr><th>solve time</th><td>126 <span class="iqr">(76&ndash;183)</span> s</td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 4.0 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S07_rho4_seed20.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S07_rho4_seed20.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S07_rho4_seed20.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="18/20 solved"><title>Wilson 95% CI 70&ndash;97%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="24.1000 75.9000" stroke-dashoffset="-0.0000"><title>5 first plan verified</title></circle><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="19.1000 80.9000" stroke-dashoffset="-25.0000"><title>4 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="44.1000 55.9000" stroke-dashoffset="-45.0000"><title>9 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-90.0000"><title>2 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">18/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>2 <span class="iqr">(0&ndash;5)</span></td></tr><tr><th>actions</th><td>25 <span class="iqr">(24&ndash;28)</span></td></tr><tr><th>motion queries</th><td>28 <span class="iqr">(24&ndash;33)</span></td></tr><tr><th>solve time</th><td>157 <span class="iqr">(82&ndash;252)</span> s</td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 4.5 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S07_rho4p5_seed20.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S07_rho4p5_seed20.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S07_rho4p5_seed20.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="16/20 solved"><title>Wilson 95% CI 58&ndash;92%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s1" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="29.1000 70.9000" stroke-dashoffset="-0.0000"><title>6 recovered directly</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="49.1000 50.9000" stroke-dashoffset="-30.0000"><title>10 recovered via relocation</title></circle><circle class="s3" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="19.1000 80.9000" stroke-dashoffset="-80.0000"><title>4 no plan found</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">16/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>3 <span class="iqr">(2&ndash;6)</span></td></tr><tr><th>actions</th><td>26 <span class="iqr">(24&ndash;26)</span></td></tr><tr><th>motion queries</th><td>30 <span class="iqr">(28&ndash;32)</span></td></tr><tr><th>solve time</th><td>161 <span class="iqr">(97&ndash;214)</span> s</td></tr></table>
-</div>
-</figure>
-</div>
-</section>
-<section class="scenario">
-<h3>Scenario 08</h3>
-<div class="grid" style="--cols: 6">
-<figure class="init">
-<div class="collabel">Initial state</div>
-<div class="frame">
-<img src="assets/engagement/init/S08.png" alt="Scenario 08 initial state" loading="lazy" data-variants="{&quot;plain&quot;:&quot;assets/no_engagement/init/S08.png&quot;,&quot;areas&quot;:&quot;assets/engagement/init/S08.png&quot;}">
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 2.5 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S08_rho2p5_seed06.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S08_rho2p5_seed06.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S08_rho2p5_seed06.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="14.1000 85.9000" stroke-dashoffset="-0.0000"><title>3 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="84.1000 15.9000" stroke-dashoffset="-15.0000"><title>17 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>2 <span class="iqr">(1&ndash;3)</span></td></tr><tr><th>actions</th><td>20 <span class="iqr">(18&ndash;20)</span></td></tr><tr><th>motion queries</th><td>22 <span class="iqr">(20&ndash;23)</span></td></tr><tr><th>solve time</th><td>23 <span class="iqr">(20&ndash;29)</span> s</td></tr><tr><th>extra relocations</th><td>3 <span class="iqr">(3&ndash;3)</span></td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 3.0 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S08_rho3_seed06.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S08_rho3_seed06.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S08_rho3_seed06.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="14.1000 85.9000" stroke-dashoffset="-0.0000"><title>3 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="84.1000 15.9000" stroke-dashoffset="-15.0000"><title>17 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>2 <span class="iqr">(1&ndash;3)</span></td></tr><tr><th>actions</th><td>20 <span class="iqr">(18&ndash;20)</span></td></tr><tr><th>motion queries</th><td>22 <span class="iqr">(19&ndash;23)</span></td></tr><tr><th>solve time</th><td>25 <span class="iqr">(22&ndash;33)</span> s</td></tr><tr><th>extra relocations</th><td>3 <span class="iqr">(3&ndash;3)</span></td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 3.5 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S08_rho3p5_seed06.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S08_rho3p5_seed06.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S08_rho3p5_seed06.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="19.1000 80.9000" stroke-dashoffset="-0.0000"><title>4 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="79.1000 20.9000" stroke-dashoffset="-20.0000"><title>16 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>2 <span class="iqr">(1&ndash;3)</span></td></tr><tr><th>actions</th><td>20 <span class="iqr">(18&ndash;20)</span></td></tr><tr><th>motion queries</th><td>22 <span class="iqr">(20&ndash;23)</span></td></tr><tr><th>solve time</th><td>26 <span class="iqr">(25&ndash;30)</span> s</td></tr><tr><th>extra relocations</th><td>3 <span class="iqr">(3&ndash;3)</span></td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius &rho; = 4.0 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S08_rho4_seed06.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S08_rho4_seed06.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S08_rho4_seed06.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-0.0000"><title>2 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="89.1000 10.9000" stroke-dashoffset="-10.0000"><title>18 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>3 <span class="iqr">(2&ndash;4)</span></td></tr><tr><th>actions</th><td>20 <span class="iqr">(20&ndash;22)</span></td></tr><tr><th>motion queries</th><td>23 <span class="iqr">(22&ndash;26)</span></td></tr><tr><th>solve time</th><td>30 <span class="iqr">(27&ndash;36)</span> s</td></tr><tr><th>extra relocations</th><td>3 <span class="iqr">(3&ndash;3)</span></td></tr></table>
-</div>
-</figure>
-<figure>
-<div class="collabel">Turning radius Turning radius &rho; = 4.5 m</div>
-<div class="frame">
-<video muted loop playsinline preload="none" data-src="assets/engagement/video/S08_rho4p5_seed06.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S08_rho4p5_seed06.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S08_rho4p5_seed06.mp4&quot;}}"></video>
-</div>
-<div class="agg">
-<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="20/20 solved"><title>Wilson 95% CI 84&ndash;100%</title><g transform="rotate(-90 50 50)"><circle class="track" cx="50" cy="50" r="40"/><circle class="s0" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="9.1000 90.9000" stroke-dashoffset="-0.0000"><title>2 first plan verified</title></circle><circle class="s2" cx="50" cy="50" r="40" pathLength="100" stroke-dasharray="89.1000 10.9000" stroke-dashoffset="-10.0000"><title>18 recovered via relocation</title></circle></g><text x="50" y="47" text-anchor="middle" dominant-baseline="middle">20/20</text><text x="50" y="62" text-anchor="middle" dominant-baseline="middle" class="sub">solved</text></svg>
-<table class="stats"><tr><th>replans</th><td>2 <span class="iqr">(1&ndash;4)</span></td></tr><tr><th>actions</th><td>20 <span class="iqr">(20&ndash;20)</span></td></tr><tr><th>motion queries</th><td>22 <span class="iqr">(21&ndash;24)</span></td></tr><tr><th>solve time</th><td>35 <span class="iqr">(27&ndash;50)</span> s</td></tr><tr><th>extra relocations</th><td>3 <span class="iqr">(3&ndash;3)</span></td></tr></table>
-</div>
-</figure>
-</div>
-</section>
-<footer>
-<p>Medians cover successful runs only &mdash; where few seeds solve a cell, the survivors are the easy ones, so a median can fall as &rho; grows.</p>
-</footer>
-</div>
+
 <script>
-// Safari/iOS workaround for MP4s served through anonymous.4open.science.
-// iOS WebKit can reject an embedded MP4 when the CDN/range-request path is
-// unhappy even though the same file plays when opened directly. On iPhone/
-// iPad we therefore fetch the whole nearby MP4 as ordinary data, create a
-// local Blob URL with an explicit video/mp4 MIME type, and play that instead.
-// Other browsers keep the normal direct URL path.
+const src = "assets/engagement/video/S01_rho2p5_seed20.mp4";
 
-const isIOSWebKit = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-                    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-
-const loadGeneration = new WeakMap();
-
-function nextGeneration(video) {
-  const n = (loadGeneration.get(video) || 0) + 1;
-  loadGeneration.set(video, n);
-  return n;
+function mediaErrorText(video) {
+  if (!video.error) return "none";
+  const names = {
+    1: "MEDIA_ERR_ABORTED",
+    2: "MEDIA_ERR_NETWORK",
+    3: "MEDIA_ERR_DECODE",
+    4: "MEDIA_ERR_SRC_NOT_SUPPORTED"
+  };
+  return `${video.error.code} (${names[video.error.code] || "unknown"})`;
 }
 
-function revokeBlob(video) {
-  if (video.dataset.blobUrl) {
-    URL.revokeObjectURL(video.dataset.blobUrl);
-    delete video.dataset.blobUrl;
+function state(video) {
+  return [
+    `currentSrc: ${video.currentSrc || "(empty)"}`,
+    `error: ${mediaErrorText(video)}`,
+    `networkState: ${video.networkState}`,
+    `readyState: ${video.readyState}`,
+    `paused: ${video.paused}`,
+    `duration: ${Number.isFinite(video.duration) ? video.duration : String(video.duration)}`
+  ].join("\n");
+}
+
+function watch(video, log) {
+  const events = ["loadstart","loadedmetadata","loadeddata","canplay","canplaythrough","play","playing","pause","stalled","suspend","waiting","abort","emptied","error"];
+  const history = [];
+  function render(ev) {
+    if (ev) history.push(ev.type);
+    if (history.length > 20) history.shift();
+    log.textContent = state(video) + `\n\nevents: ${history.join(" → ")}`;
   }
+  for (const name of events) video.addEventListener(name, render);
+  render();
 }
 
-function clearClip(video) {
-  nextGeneration(video); // invalidate any fetch still in flight
-  video.pause();
-  revokeBlob(video);
-  video.removeAttribute("src");
-  delete video.dataset.loadedSource;
-  video.load();
-}
-
-function prepareVideo(video) {
-  video.muted = true;
-  video.defaultMuted = true;
-  video.autoplay = true;
-  video.playsInline = true;
-  video.setAttribute("muted", "");
-  video.setAttribute("autoplay", "");
-  video.setAttribute("playsinline", "");
-  video.setAttribute("webkit-playsinline", "");
-}
-
-function tryPlay(video) {
-  prepareVideo(video);
-  const promise = video.play();
-  if (promise && typeof promise.catch === "function") {
-    promise.catch((error) => {
-      console.warn("Video playback failed:", video.dataset.src, error);
-      // Manual fallback remains tappable if autoplay is disabled by iOS.
-      video.controls = true;
-    });
-  }
-}
-
-async function loadClip(video) {
-  const wanted = video.dataset.src;
-  if (!wanted) return;
-
-  if (video.dataset.loadedSource === wanted && video.getAttribute("src")) {
-    tryPlay(video);
-    return;
-  }
-
-  const generation = nextGeneration(video);
-  video.pause();
-  revokeBlob(video);
-  video.removeAttribute("src");
-  delete video.dataset.loadedSource;
-
+const direct = document.getElementById("direct");
+const directLog = document.getElementById("directLog");
+watch(direct, directLog);
+document.getElementById("directPlay").addEventListener("click", async () => {
   try {
-    if (isIOSWebKit) {
-      // Deliberately use fetch rather than letting <video> request the MP4.
-      // This avoids WebKit's special byte-range media request path.
-      const response = await fetch(wanted, { cache: "force-cache" });
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status} while fetching ${wanted}`);
+    direct.muted = true;
+    await direct.play();
+  } catch (e) {
+    directLog.textContent += `\n\nplay() rejected: ${e.name}: ${e.message}`;
+  }
+});
+
+const blobVideo = document.getElementById("blobVideo");
+const blobLog = document.getElementById("blobLog");
+watch(blobVideo, blobLog);
+let oldBlobUrl = null;
+
+document.getElementById("blobLoad").addEventListener("click", async () => {
+  blobLog.textContent = "fetching...";
+  try {
+    const response = await fetch(src, { cache: "no-store" });
+    const ct = response.headers.get("content-type");
+    const cl = response.headers.get("content-length");
+    const ar = response.headers.get("accept-ranges");
+    const cr = response.headers.get("content-range");
+    const buf = await response.arrayBuffer();
+    const first = Array.from(new Uint8Array(buf.slice(0, 16))).map(x => x.toString(16).padStart(2,"0")).join(" ");
+
+    if (oldBlobUrl) URL.revokeObjectURL(oldBlobUrl);
+    const blob = new Blob([buf], { type: "video/mp4" });
+    oldBlobUrl = URL.createObjectURL(blob);
+    blobVideo.src = oldBlobUrl;
+    blobVideo.muted = true;
+    blobVideo.load();
+
+    blobLog.textContent = [
+      `fetch status: ${response.status}`,
+      `content-type: ${ct}`,
+      `content-length: ${cl}`,
+      `accept-ranges: ${ar}`,
+      `content-range: ${cr}`,
+      `downloaded bytes: ${buf.byteLength}`,
+      `first 16 bytes: ${first}`,
+      `blob type: ${blob.type}`,
+      `blob size: ${blob.size}`,
+      `blob URL: ${oldBlobUrl}`,
+      "",
+      state(blobVideo)
+    ].join("\n");
+
+    blobVideo.addEventListener("loadedmetadata", async function once() {
+      blobVideo.removeEventListener("loadedmetadata", once);
+      try {
+        await blobVideo.play();
+      } catch (e) {
+        blobLog.textContent += `\n\nplay() rejected: ${e.name}: ${e.message}`;
       }
-
-      const bytes = await response.arrayBuffer();
-
-      // The user may have switched variants or scrolled away during fetch.
-      if (loadGeneration.get(video) !== generation || video.dataset.src !== wanted) {
-        return;
-      }
-
-      // Force the MIME type instead of trusting the CDN response header.
-      const blob = new Blob([bytes], { type: "video/mp4" });
-      const blobUrl = URL.createObjectURL(blob);
-      video.dataset.blobUrl = blobUrl;
-      video.src = blobUrl;
-    } else {
-      video.src = wanted;
-    }
-
-    video.dataset.loadedSource = wanted;
-    prepareVideo(video);
-    video.load();
-    tryPlay(video);
-  } catch (error) {
-    if (loadGeneration.get(video) !== generation) return;
-    console.error("Could not load video:", wanted, error);
-    video.controls = true;
+    });
+  } catch (e) {
+    blobLog.textContent = `FETCH/BLOB FAILED\n${e.name}: ${e.message}`;
   }
-}
-
-// Only load clips close to the viewport. On iOS, unload Blob URLs again after
-// they move well away from the viewport so dozens of full MP4s do not remain
-// in memory at once.
-const observer = new IntersectionObserver((entries) => {
-  for (const entry of entries) {
-    const video = entry.target;
-
-    if (entry.isIntersecting) {
-      video.dataset.nearViewport = "1";
-      loadClip(video);
-    } else {
-      video.dataset.nearViewport = "0";
-      video.pause();
-      if (isIOSWebKit && video.dataset.blobUrl) {
-        clearClip(video);
-      }
-    }
-  }
-}, { rootMargin: "300px 0px" });
-
-const clips = document.querySelectorAll("video[data-src]");
-for (const clip of clips) {
-  prepareVideo(clip);
-  clip.preload = "none";
-  observer.observe(clip);
-}
-
-if (!clips.length) {
-  console.warn("No clips found to play -- the page was built without video sources.");
-}
-
-// Global variant switch: every clip and every initial-state still changes
-// together.
-const variantSwitch = document.querySelector("[data-variant-switch]");
-
-function applyVariant(key) {
-  for (const video of document.querySelectorAll("video[data-variants]")) {
-    let map;
-    try {
-      map = JSON.parse(video.dataset.variants);
-    } catch (error) {
-      console.warn("Invalid video variant data:", error);
-      continue;
-    }
-
-    const pick = map[key];
-    if (!pick || !pick.src) continue;
-
-    video.dataset.src = pick.src;
-    clearClip(video);
-
-    if (video.dataset.nearViewport === "1") {
-      loadClip(video);
-    }
-  }
-
-  for (const image of document.querySelectorAll("img[data-variants]")) {
-    let map;
-    try {
-      map = JSON.parse(image.dataset.variants);
-    } catch (error) {
-      console.warn("Invalid image variant data:", error);
-      continue;
-    }
-
-    if (map[key]) {
-      image.src = map[key];
-    }
-  }
-}
-
-if (variantSwitch) {
-  variantSwitch.addEventListener("change", (event) => {
-    if (event.target.name === "variant") {
-      applyVariant(event.target.value);
-    }
-  });
-}
-
-// Release Blob URLs if the page is left/reloaded.
-window.addEventListener("pagehide", () => {
-  for (const video of clips) revokeBlob(video);
 });
 </script>
 </body>
