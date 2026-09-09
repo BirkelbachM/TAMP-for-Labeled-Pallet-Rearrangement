@@ -684,14 +684,45 @@ code {
 <script>
 // Clips load only when they approach the viewport. This keeps the page from
 // trying to download every animation at once.
+//
+// Safari/iOS notes:
+// - muted + playsinline are required for reliable inline autoplay.
+// - call load() after assigning/changing src so WebKit notices the new media.
+// - do not silently discard play() errors; if autoplay is blocked, expose
+//   native controls so the user can start the clip manually.
+function playClip(video) {
+  video.muted = true;
+  video.playsInline = true;
+
+  const promise = video.play();
+  if (promise && typeof promise.catch === "function") {
+    promise.catch((error) => {
+      console.warn("Video autoplay failed:", video.currentSrc || video.src, error);
+      video.controls = true;
+      video.style.pointerEvents = "auto";
+    });
+  }
+}
+
+function loadClip(video, src) {
+  if (!src) return;
+
+  // Avoid reloading the same source unnecessarily. currentSrc is absolute,
+  // while data-src is relative, so compare the src attribute as well.
+  if (video.getAttribute("src") !== src) {
+    video.setAttribute("src", src);
+    video.load();
+  }
+}
+
 const observer = new IntersectionObserver((entries) => {
   for (const entry of entries) {
     const video = entry.target;
+    video.dataset.inViewport = entry.isIntersecting ? "1" : "0";
+
     if (entry.isIntersecting) {
-      if (!video.src && video.dataset.src) {
-        video.src = video.dataset.src;
-      }
-      video.play().catch(() => {});
+      loadClip(video, video.dataset.src);
+      playClip(video);
     } else {
       video.pause();
     }
@@ -701,6 +732,10 @@ const observer = new IntersectionObserver((entries) => {
 const clips = document.querySelectorAll("video[data-src]");
 
 for (const clip of clips) {
+  // Keep these properties set explicitly as well as in the HTML attributes;
+  // this is helpful on Safari when media sources are assigned dynamically.
+  clip.muted = true;
+  clip.playsInline = true;
   observer.observe(clip);
 }
 
@@ -722,20 +757,27 @@ function applyVariant(key) {
     try {
       map = JSON.parse(video.dataset.variants);
     } catch (error) {
+      console.warn("Invalid video variant data:", error);
       continue;
     }
 
     const pick = map[key];
 
-    if (!pick) {
+    if (!pick || !pick.src) {
       continue;
     }
 
     video.dataset.src = pick.src;
 
-    if (video.src) {
-      video.src = pick.src;
-      video.play().catch(() => {});
+    // Only download/play a changed variant if this clip has already been
+    // reached by the observer. Off-screen clips remain lazy-loaded.
+    if (video.hasAttribute("src")) {
+      video.pause();
+      loadClip(video, pick.src);
+
+      if (video.dataset.inViewport === "1") {
+        playClip(video);
+      }
     }
   }
 
@@ -746,6 +788,7 @@ function applyVariant(key) {
     try {
       map = JSON.parse(image.dataset.variants);
     } catch (error) {
+      console.warn("Invalid image variant data:", error);
       continue;
     }
 
