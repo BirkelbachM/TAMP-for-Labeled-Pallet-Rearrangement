@@ -1,0 +1,29 @@
+{
+  "scene_id": "scenario01_respect_order_to_avoid_kinematic_blocking",
+  "workspace": {"width": 18.5, "height": 18.5, "center": [0.0, 0.0]},
+  "initial_forklift_pose": {"x": 0.5, "y": -6.2, "theta": 0.0},
+  "initial_forklift_pose_reference": "footprint_center",
+  "target_arrangement": "open",
+  "pallets": [
+    {"id": "P001", "initial": {"x": -7.5, "y": -7.25, "theta": 0.0}, "target": {"x": 7.75, "y": 5.0, "theta": 0.0}},
+    {"id": "P002", "initial": {"x": -7.5, "y": -6.0, "theta": 0.0}, "target": {"x": 7.75, "y": 7.5, "theta": 0.0}},
+    {"id": "P003", "initial": {"x": -7.5, "y": -4.75, "theta": 0.0}, "target": {"x": 1.5, "y": 5.0, "theta": 0.0}},
+    {"id": "P004", "initial": {"x": -7.5, "y": -3.5, "theta": 0.0}, "target": {"x": 1.5, "y": 6.25, "theta": 0.0}},
+    {"id": "P005", "initial": {"x": -7.5, "y": -2.25, "theta": 0.0}, "target": {"x": 1.5, "y": 7.5, "theta": 0.0}},
+    {"id": "P006", "initial": {"x": -7.5, "y": -1.0, "theta": 0.0}, "target": {"x": 7.75, "y": 6.25, "theta": 0.0}},
+    {"id": "P007", "initial": {"x": -7.5, "y": 0.25, "theta": 0.0}, "target": {"x": 7.75, "y": 3.75, "theta": 0.0}},
+    {"id": "P008", "initial": {"x": -7.5, "y": 1.5, "theta": 0.0}, "target": {"x": 1.5, "y": 3.75, "theta": 0.0}}
+  ],
+  "buffers": [
+    {"id": "B001", "pose": {"x": 7.75, "y": -7.25, "theta": 0.0}},
+    {"id": "B002", "pose": {"x": 7.75, "y": -6.0, "theta": 0.0}},
+    {"id": "B003", "pose": {"x": 7.75, "y": -4.75, "theta": 0.0}},
+    {"id": "B004", "pose": {"x": 7.75, "y": -3.5, "theta": 0.0}}
+  ],
+  "obstacles": [
+    {"id": "W001", "vertices": [[-8.75, 8.75], [8.75, 8.75], [8.75, 9.25], [-8.75, 9.25]]},
+    {"id": "W002", "vertices": [[8.75, -9.25], [9.25, -9.25], [9.25, 9.25], [8.75, 9.25]]},
+    {"id": "W003", "vertices": [[-8.75, -9.25], [8.75, -9.25], [8.75, -8.75], [-8.75, -8.75]]},
+    {"id": "W004", "vertices": [[-9.25, -9.25], [-8.75, -9.25], [-8.75, 9.25], [-9.25, 9.25]]}
+  ]
+}
