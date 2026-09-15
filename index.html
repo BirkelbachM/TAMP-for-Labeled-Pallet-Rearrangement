@@ -47,6 +47,26 @@ h1 { font-size: 32px; font-weight: 700; margin: 0 0 10px; letter-spacing: -0.4px
 .sw2 { background: var(--o2); }
 .sw3 { background: var(--o3); }
 
+.readme {
+  max-width: 900px; margin: 0 auto 46px; font-size: 13px; color: var(--muted);
+}
+.readme summary {
+  cursor: pointer; font-weight: 700; color: var(--ink); text-align: center;
+  list-style: none;
+}
+.readme summary::-webkit-details-marker { display: none; }
+.readme summary::after { content: " \25BE"; color: var(--label); }
+.readme[open] summary::after { content: " \25B4"; }
+.readme-body { margin: 18px auto 0; max-width: 74ch; }
+.readme-body p { margin: 0 0 12px; }
+.readme-body dl { margin: 0 0 16px; }
+.readme-body dt {
+  font-weight: 700; color: var(--ink); margin-top: 8px;
+  display: flex; align-items: center; gap: 7px;
+}
+.readme-body dt:first-child { margin-top: 0; }
+.readme-body dd { margin: 2px 0 0 17px; }
+
 /* Global variant control. Sits between the masthead and the grid
    because it governs every tile below it, not any one row. */
 .switch {
@@ -79,7 +99,11 @@ h1 { font-size: 32px; font-weight: 700; margin: 0 0 10px; letter-spacing: -0.4px
 .scenario { margin-bottom: 56px; }
 .scenario > h3 {
   text-align: center; font-size: 18px; font-weight: 700;
-  margin: 0 0 18px; letter-spacing: -0.1px;
+  margin: 0 0 6px; letter-spacing: -0.1px;
+}
+.scenario-note {
+  text-align: center; color: var(--muted); font-size: 13px;
+  max-width: 70ch; margin: 0 auto 18px;
 }
 .grid {
   display: grid;
@@ -170,31 +194,7 @@ footer {
 footer p { margin: 0; }
 code {
   font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 0.92em;
-}
-
-/* iPhone/iPad fallback: Anonymous GitHub's embedded media path can be
-   rejected by Safari even when the MP4 opens directly. On iOS the script
-   below replaces each <video> with a normal link to the MP4. */
-.ios-video-link {
-  width: 100%; height: 100%; display: flex;
-  flex-direction: column; align-items: center; justify-content: center;
-  gap: 10px; padding: 18px;
-  color: var(--ink); background: var(--panel);
-  text-decoration: none; text-align: center;
-  -webkit-tap-highlight-color: rgba(0,0,0,0.08);
-}
-.ios-video-link:active { opacity: 0.72; }
-.ios-video-play {
-  width: 52px; height: 52px; border-radius: 50%;
-  border: 2px solid var(--ink);
-  display: grid; place-items: center;
-  font-size: 24px; line-height: 1;
-  padding-left: 3px;
-}
-.ios-video-text { font-size: 13px; font-weight: 700; }
-.ios-video-hint { font-size: 11px; color: var(--muted); font-weight: 400; }
-
-</style>
+}</style>
 </head>
 <body>
 <div class="wrap">
@@ -213,6 +213,27 @@ code {
 <label><input type="radio" name="variant" value="plain"><span>Off</span></label>
 <label><input type="radio" name="variant" value="areas" checked><span>On</span></label>
 </div>
+<details class="readme">
+<summary>How to read this</summary>
+<div class="readme-body">
+<p>Each scenario is a fixed layout, run at 5 turning radii &rho; &times; 20 random seeds. The clip in each cell plays one fixed representative seed per scenario, so the same run can be compared across &rho;. The graph and table below each video summarize all 20 seeds for that cell.</p>
+<dl>
+<dt><i class="swatch sw0"></i>first plan verified</dt><dd>Every motion query in the initial symbolic plan succeeded on the first try without replanning.</dd>
+<dt><i class="swatch sw1"></i>recovered directly</dt><dd>A motion query failed, but the planner found a working action sequence without relocating any pallet outside the task.</dd>
+<dt><i class="swatch sw2"></i>recovered via relocation</dt><dd>Recovery required temporarily moving an untargeted pallet into a buffer to clear a path before continuing.</dd>
+<dt><i class="swatch sw3"></i>no plan found</dt><dd>The run exhausted its time budget (150&nbsp;s of symbolic search or 600&nbsp;s overall) before finding a verified plan. This is a budget limit, not proof the rearrangement is impossible.</dd>
+</dl>
+<p>The number inside each donut is <code>solved / 20</code>; hovering it shows the Wilson 95% confidence interval on that success rate, which widens where few seeds are solved. The table rows show the medians with interquartile range, successful runs only:</p>
+<dl>
+<dt>replans</dt><dd>How many times a failed motion query forced the task planner to search for a different action sequence.</dd>
+<dt>actions</dt><dd>Load/Place actions in the final committed plan.</dd>
+<dt>motion queries</dt><dd>Low-level path-planning calls issued to validate those actions.</dd>
+<dt>solve time</dt><dd>Total time required for symbolic search and motion planning.</dd>
+<dt>extra relocations</dt><dd>Untargeted pallets temporarily parked in a buffer to clear a path; shown only for scenarios that need it.</dd>
+</dl>
+<p>The &ldquo;Engagement areas&rdquo; toggle overlays the footprint the forklift must occupy to load or place each pallet; it doesn't change any run's outcome.</p>
+</div>
+</details>
 <section class="scenario">
 <h3>Scenario 01</h3>
 <div class="grid" style="--cols: 6">
@@ -690,7 +711,7 @@ code {
 </div>
 </figure>
 <figure>
-<div class="collabel">Turning radius Turning radius &rho; = 4.5 m</div>
+<div class="collabel">Turning radius &rho; = 4.5 m</div>
 <div class="frame">
 <video muted loop playsinline preload="none" data-src="assets/engagement/video/S08_rho4p5_seed06.mp4" disablepictureinpicture data-variants="{&quot;plain&quot;:{&quot;src&quot;:&quot;assets/no_engagement/video/S08_rho4p5_seed06.mp4&quot;},&quot;areas&quot;:{&quot;src&quot;:&quot;assets/engagement/video/S08_rho4p5_seed06.mp4&quot;}}"></video>
 </div>
@@ -701,143 +722,87 @@ code {
 </figure>
 </div>
 </section>
-<footer>
-<p>Medians cover successful runs only &mdash; where few seeds solve a cell, the survivors are the easy ones, so a median can fall as &rho; grows.</p>
-</footer>
 </div>
 <script>
-// iPhone/iPad fallback ------------------------------------------------------
-// Safari on anonymous.4open.science can reject these MP4s when embedded in a
-// <video>, even though the same MP4 plays when opened directly. Therefore iOS
-// gets a normal link to each MP4. Other platforms keep the original behavior.
-const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-              (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+// Clips load only when they approach the viewport. This keeps the page from
+// trying to download every animation at once.
+const observer = new IntersectionObserver((entries) => {
+  for (const entry of entries) {
+    const video = entry.target;
+    if (entry.isIntersecting) {
+      if (!video.src && video.dataset.src) {
+        video.src = video.dataset.src;
+      }
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  }
+}, { rootMargin: "400px 0px" });
 
+const clips = document.querySelectorAll("video[data-src]");
+
+for (const clip of clips) {
+  observer.observe(clip);
+}
+
+if (!clips.length) {
+  console.warn("No clips found to play -- the page was built without "
+               + "video sources.");
+}
+
+// Global variant switch: every clip and every initial-state still
+// changes together.
 const variantSwitch = document.querySelector("[data-variant-switch]");
 
-function applyImageVariant(key) {
-  for (const image of document.querySelectorAll("img[data-variants]")) {
+function applyVariant(key) {
+
+  for (const video of document.querySelectorAll("video[data-variants]")) {
+
     let map;
+
+    try {
+      map = JSON.parse(video.dataset.variants);
+    } catch (error) {
+      continue;
+    }
+
+    const pick = map[key];
+
+    if (!pick) {
+      continue;
+    }
+
+    video.dataset.src = pick.src;
+
+    if (video.src) {
+      video.src = pick.src;
+      video.play().catch(() => {});
+    }
+  }
+
+  for (const image of document.querySelectorAll("img[data-variants]")) {
+
+    let map;
+
     try {
       map = JSON.parse(image.dataset.variants);
     } catch (error) {
       continue;
     }
-    if (map[key]) image.src = map[key];
+
+    if (map[key]) {
+      image.src = map[key];
+    }
   }
 }
 
-if (isIOS) {
-  // Replace every embedded player with a simple direct link. The link uses the
-  // same relative MP4 path that already works when opened directly in Safari.
-  for (const video of document.querySelectorAll("video[data-src]")) {
-    const link = document.createElement("a");
-    link.className = "ios-video-link";
-    link.href = video.dataset.src;
-    link.setAttribute("aria-label", "Open video in Safari");
-
-    if (video.dataset.variants) {
-      link.dataset.variants = video.dataset.variants;
+if (variantSwitch) {
+  variantSwitch.addEventListener("change", (event) => {
+    if (event.target.name === "variant") {
+      applyVariant(event.target.value);
     }
-
-    const play = document.createElement("span");
-    play.className = "ios-video-play";
-    play.setAttribute("aria-hidden", "true");
-    play.textContent = "▶";
-
-    const text = document.createElement("span");
-    text.className = "ios-video-text";
-    text.textContent = "Tap to open video";
-
-    const hint = document.createElement("span");
-    hint.className = "ios-video-hint";
-    hint.textContent = "Opens in Safari's video player";
-
-    link.append(play, text, hint);
-    video.replaceWith(link);
-  }
-
-  function applyVariant(key) {
-    for (const link of document.querySelectorAll("a.ios-video-link[data-variants]")) {
-      let map;
-      try {
-        map = JSON.parse(link.dataset.variants);
-      } catch (error) {
-        continue;
-      }
-      const pick = map[key];
-      if (pick && pick.src) link.href = pick.src;
-    }
-    applyImageVariant(key);
-  }
-
-  if (variantSwitch) {
-    variantSwitch.addEventListener("change", (event) => {
-      if (event.target.name === "variant") {
-        applyVariant(event.target.value);
-      }
-    });
-  }
-
-} else {
-  // Original desktop / Android behavior -----------------------------------
-  // Clips load only when they approach the viewport. This keeps the page from
-  // trying to download every animation at once.
-  const observer = new IntersectionObserver((entries) => {
-    for (const entry of entries) {
-      const video = entry.target;
-      if (entry.isIntersecting) {
-        if (!video.src && video.dataset.src) {
-          video.src = video.dataset.src;
-        }
-        video.play().catch(() => {});
-      } else {
-        video.pause();
-      }
-    }
-  }, { rootMargin: "400px 0px" });
-
-  const clips = document.querySelectorAll("video[data-src]");
-
-  for (const clip of clips) {
-    observer.observe(clip);
-  }
-
-  if (!clips.length) {
-    console.warn("No clips found to play -- the page was built without "
-                 + "video sources.");
-  }
-
-  function applyVariant(key) {
-    for (const video of document.querySelectorAll("video[data-variants]")) {
-      let map;
-      try {
-        map = JSON.parse(video.dataset.variants);
-      } catch (error) {
-        continue;
-      }
-
-      const pick = map[key];
-      if (!pick) continue;
-
-      video.dataset.src = pick.src;
-
-      if (video.src) {
-        video.src = pick.src;
-        video.play().catch(() => {});
-      }
-    }
-
-    applyImageVariant(key);
-  }
-
-  if (variantSwitch) {
-    variantSwitch.addEventListener("change", (event) => {
-      if (event.target.name === "variant") {
-        applyVariant(event.target.value);
-      }
-    });
-  }
+  });
 }
 </script>
 </body>
